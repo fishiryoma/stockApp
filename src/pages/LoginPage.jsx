@@ -20,11 +20,11 @@ function LoginPage() {
     // checkPermission(token);
     // Cookies.set("testCookie", "ccc");
     // console.log(Cookies.get("testCookie"));
-    // const cookie = Cookies.get("testCookie");
-    // checkPermission(cookie);
-    checkPermission(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwibmFtZSI6bnVsbCwiZW1haWwiOiIwMDAxQGFhLmFhIiwiY3JlYXRlZEF0IjoiMjAyNC0wMS0xOFQxMTozNTozNS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyNC0wMS0xOFQxMTozNTozNS4wMDBaIiwiaWF0IjoxNzA1NTc3NzczLCJleHAiOjE3MDgxNjk3NzN9.wpsEi6ncDRGhfA4vqq-0ENQMemkyzx1tt1ectDtRH64"
-    );
+    const cookie = Cookies.get("token_StockApp");
+    checkPermission(cookie);
+    // checkPermission(
+    //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwib…wNTd9.OFyHf32HabGNX67H_GCxOSZ0gDYNXvZq9Wx1Yfu29Kg"
+    // );
   }
 
   return (
