@@ -49,12 +49,6 @@ export const checkPermission = async (authToken) => {
     const res = await axios.get(`${baseUrl}/test-token`, {
       headers: {
         Authorization: "Bearer " + authToken,
-        // 網路查到的方法如下
-        // "ngrok-skip-browser-warning": "true",
-
-        // Authorization:
-        //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwibmFtZSI6bnVsbCwiZW1haWwiOiIwMDAxQGFhLmFhIiwiY3JlYXRlZEF0IjoiMjAyNC0wMS0xOFQxMTozNTozNS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyNC0wMS0xOFQxMTozNTozNS4wMDBaIiwiaWF0IjoxNzA1NjYzODA2LCJleHAiOjE3MDgyNTU4MDZ9.SgVbWMjTqsN6iK1f8U5arcRnEmPYh_Y3Xt44moxyQ2s",
-        // "ngrok-skip-browser-warning": "69420",
       },
     });
 

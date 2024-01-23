@@ -1,5 +1,6 @@
-import { AuthContainer, AuthButton } from "../componenets/AuthContainer";
-import AuthInput from "./AuthInput";
+import { AuthContainer } from "../componenets/AuthContainer";
+import { Button } from "../componenets/Button";
+import Input from "./Input";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { login, checkPermission } from "../api/auth";
@@ -31,7 +32,7 @@ function LoginPage() {
     <AuthContainer>
       <p className="text-center font-bold">登入</p>
       <form onSubmit={handleSubmit}>
-        <AuthInput
+        <Input
           type="email"
           label="使用者信箱"
           value={email}
@@ -39,7 +40,7 @@ function LoginPage() {
           onChange={(email) => setEmail(email)}
           required
         />
-        <AuthInput
+        <Input
           type="password"
           label="密碼"
           value={password}
@@ -49,13 +50,12 @@ function LoginPage() {
         />
         <div className="flex justify-center gap-x-4 mt-6">
           <Link to="/register">
-            <AuthButton
+            <Button
               text="註冊"
-              bgColor="bg-rose-400"
-              hover="hover:bg-rose-500"
+              buttonClass="bg-rose-400 hover:bg-rose-500 py-2"
             />
           </Link>
-          <AuthButton text="登入" />
+          <Button text="登入" />
         </div>
       </form>
       <button onClick={handleClick}>CHECK</button>

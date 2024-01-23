@@ -4,6 +4,9 @@ function Sidebar() {
   const links = [
     { label: "登入", path: "/login" },
     { label: "註冊新帳號", path: "/register" },
+    { label: "持有個股總覽", path: "/sum" },
+    { label: "新增交易", path: "/newtransc" },
+    { label: "交易紀錄", path: "/transcsum" },
   ];
 
   const renderedLink = links.map((link) => (
