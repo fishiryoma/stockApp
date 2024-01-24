@@ -3,14 +3,14 @@ import { createContext, useState } from "react";
 const StockContext = createContext();
 
 function StockProvider({ children }) {
-  const [symbol, setSymbol] = useState("");
+  const [name, setName] = useState("");
 
-  const getSymbol = (symbol) => {
-    setSymbol(symbol);
+  const getName = (data) => {
+    setName(data);
   };
 
   return (
-    <StockContext.Provider value={{ symbol, getSymbol }}>
+    <StockContext.Provider value={{ name, getName }}>
       {children}
     </StockContext.Provider>
   );

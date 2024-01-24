@@ -4,7 +4,7 @@ import classNames from "classnames";
 function Button({ text, buttonClass }) {
   const classes = twMerge(
     classNames(
-      "rounded-md py-1 px-3.5 text-xs shadow text-white bg-sky-400 hover:bg-sky-500",
+      "rounded-md py-1 px-3.5 shadow text-white bg-transparent hover:bg-slate-200 ",
       buttonClass
     )
   );
@@ -12,4 +12,4 @@ function Button({ text, buttonClass }) {
   return <button className={classes}>{text}</button>;
 }
 
-export { Button };
+export default Button;

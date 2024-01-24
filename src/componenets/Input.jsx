@@ -15,13 +15,11 @@ function Input({
 }) {
   const inputClass = twMerge(
     classNames(
-      "py-1.5 px-3.5 rounded-md placeholder:text-slate-400 block bg-white w-full border border-slate-300 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-xs",
+      "py-1.5 px-3.5 rounded-md placeholder:text-slate-400 block bg-white w-full border border-slate-300 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1",
       inputClassName
     )
   );
-  const labelClass = twMerge(
-    classNames("text-xs mb-1.5 block", labelClassName)
-  );
+  const labelClass = twMerge(classNames("mb-1.5 block", labelClassName));
   const wrapClass = twMerge(classNames("my-4"), wrapClassName);
 
   return (

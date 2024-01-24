@@ -1,5 +1,7 @@
+import { Container } from "../componenets/Container";
+
 function TransactionPage() {
-  return <div>交易紀錄總覽</div>;
+  return <Container>交易紀錄總覽</Container>;
 }
 
 export default TransactionPage;
