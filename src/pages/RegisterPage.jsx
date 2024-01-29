@@ -1,4 +1,4 @@
-import { Container, AuthContainer } from "../componenets/Container";
+import { Container, FormContainer } from "../componenets/Container";
 import Button from "../componenets/Button";
 import Input from "../componenets/Input";
 import { useState } from "react";
@@ -19,7 +19,7 @@ function RegisterPage() {
   }
   return (
     <Container>
-      <AuthContainer>
+      <FormContainer>
         <p className="text-center text-xl font-bold">註冊新帳號</p>
         <form onSubmit={handleSubmit}>
           <Input
@@ -65,7 +65,7 @@ function RegisterPage() {
             <Button text="註冊" buttonClass="bg-blue-400 hover:bg-blue-500" />
           </div>
         </form>
-      </AuthContainer>
+      </FormContainer>
     </Container>
   );
 }

@@ -6,7 +6,10 @@ function Nav() {
     { label: "註冊新帳號", path: "/register" },
     { label: "持有個股總覽", path: "/sum" },
     { label: "新增交易", path: "/newtransc" },
-    { label: "交易紀錄", path: "/transcsum" },
+    {
+      label: "新增股利",
+      path: "/newdividend",
+    },
   ];
   const appName = "股利計算器";
   const renderedLink = links.map((link) => (

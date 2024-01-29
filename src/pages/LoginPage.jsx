@@ -1,4 +1,4 @@
-import { Container, AuthContainer } from "../componenets/Container";
+import { Container, FormContainer } from "../componenets/Container";
 import Button from "../componenets/Button";
 import Input from "../componenets/Input";
 import { useState } from "react";
@@ -30,7 +30,7 @@ function LoginPage() {
 
   return (
     <Container>
-      <AuthContainer>
+      <FormContainer>
         <p className="text-xl text-center font-bold">登入</p>
         <form onSubmit={handleSubmit}>
           <Input
@@ -60,7 +60,7 @@ function LoginPage() {
           </div>
         </form>
         {/* <button onClick={handleClick}>CHECK</button> */}
-      </AuthContainer>
+      </FormContainer>
     </Container>
   );
 }

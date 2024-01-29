@@ -4,7 +4,8 @@ import { TableContainer, Container } from "../componenets/Container";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import StockContext from "../contexts/StockContext";
-import Example from "../componenets/PieChart";
+import SumPieChart from "../componenets/SumPieChart";
+import SumLineChart from "../componenets/SumLineChart";
 
 function SumPage() {
   const { getName } = useContext(StockContext);
@@ -81,12 +82,19 @@ function SumPage() {
     },
   ];
   return (
-    <Container>
-      <div className="flex flex-col justify-center items-center">
-        <TableContainer>
-          <Table config={config} datas={datas} />
-        </TableContainer>
-        <Example />
+    <Container className="flex flex-col items-center gap-6">
+      <p className="text-xl font-bold">資產趨勢</p>
+
+      <SumLineChart />
+
+      <p className="text-xl font-bold">證劵組成</p>
+      <div className="w-full">
+        <div className="flex justify-center items-center">
+          <SumPieChart />
+          <TableContainer>
+            <Table config={config} datas={datas} />
+          </TableContainer>
+        </div>
       </div>
     </Container>
   );

@@ -18,10 +18,12 @@ function NewTransctionPage() {
   // Style
 
   const wrapclass = "my-1";
-  const formClass = classNames(
-    "w-full md:w-1/3 mx-auto flex flex-col p-8 rounded shadow",
-    buy === "t" && "bg-pink-50",
-    buy === "f" && "bg-green-50"
+  const formClass = twMerge(
+    classNames(
+      "w-full md:w-1/3 lg:w-1/4 mx-auto flex flex-col p-8 rounded shadow bg-white",
+      buy === "t" && "bg-pink-50",
+      buy === "f" && "bg-green-50"
+    )
   );
   const radioClass =
     "w-1/2 mt-0.5 mx-0.5 py-3 text-white rounded text-center shadow cursor-pointer";
@@ -51,10 +53,10 @@ function NewTransctionPage() {
   };
 
   return (
-    <Container>
+    <Container className="bg-gray-800 mt-0 pt-10 rounded ">
       <form className={formClass} onSubmit={handleSubmit}>
         <AuthInput
-          type="text"
+          type="number"
           label="個股代碼"
           placeholder="00878"
           wrapClassName={wrapclass}
