@@ -19,7 +19,9 @@ function Input({
       inputClassName
     )
   );
-  const labelClass = twMerge(classNames("mb-1.5 block", labelClassName));
+  const labelClass = twMerge(
+    classNames("mb-1.5 block text-white", labelClassName)
+  );
   const wrapClass = twMerge(classNames("my-4"), wrapClassName);
 
   return (

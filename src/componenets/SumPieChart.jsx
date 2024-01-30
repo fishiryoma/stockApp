@@ -57,21 +57,21 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 function SumPieChart() {
   return (
     <div className="relative">
-      <div className="absolute inset-32 font-bold text-lg flex flex-col justify-center items-center">
+      <div className="absolute inset-24 font-bold text-lg flex flex-col justify-center items-center">
         <p>TWD</p>
         <p>100000</p>
       </div>
       <Button
         text="新增交易"
-        buttonClass="z-10 absolute -bottom-4 left-1/2 -translate-x-1/2 bg-blue-500 hover:bg-blue-700 px-6 py-2"
+        buttonClass="z-10 absolute -bottom-11 left-1/2 -translate-x-1/2 bg-gray-500 hover:bg-gray-300 hover:text-gray-800 font-bold text-sm px-6 py-2"
       />
-      <PieChart width={400} height={250}>
+      <PieChart width={300} height={200}>
         <Pie
           data={data}
           cx="50%"
           cy="50%"
           innerRadius={60}
-          outerRadius={85}
+          outerRadius={90}
           fill="#8884d8"
           paddingAngle={0}
           dataKey="quantity"

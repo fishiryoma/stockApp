@@ -18,14 +18,15 @@ function RegisterPage() {
     register({ username, email, password, checkPassword });
   }
   return (
-    <Container>
-      <FormContainer>
+    <Container className="bg-white">
+      <FormContainer className="md:w-2/3 lg:w-2/5 xl:w-1/4">
         <p className="text-center text-xl font-bold">註冊新帳號</p>
         <form onSubmit={handleSubmit}>
           <Input
             type="text"
             label="使用者名稱"
             placeholder=""
+            labelClassName="text-gray-800"
             value={username}
             onChange={(username) => setUsername(username)}
           />
@@ -34,6 +35,7 @@ function RegisterPage() {
             label="註冊信箱*"
             value={email}
             placeholder=""
+            labelClassName="text-gray-800"
             onChange={(email) => setEmail(email)}
             required
           />
@@ -43,6 +45,7 @@ function RegisterPage() {
             value={password}
             pattern="^[a-zA-Z0-9]{4,}$"
             placeholder="請輸入4位以上英數字"
+            labelClassName="text-gray-800"
             onChange={(password) => setPassword(password)}
             required
           />
@@ -52,6 +55,7 @@ function RegisterPage() {
             value={checkPassword}
             pattern="^[a-zA-Z0-9]{4,}$"
             placeholder="請輸入4位以上英數字"
+            labelClassName="text-gray-800"
             onChange={(password) => setCheckPassword(password)}
             required
           />

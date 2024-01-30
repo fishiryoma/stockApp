@@ -14,15 +14,16 @@ function NewTransctionPage() {
   const [fee, setFee] = useState("");
   const [note, setNote] = useState("");
   const [buy, setBuy] = useState("");
+  const [stockName, setStockName] = useState("");
 
   // Style
 
   const wrapclass = "my-1";
   const formClass = twMerge(
     classNames(
-      "w-full md:w-1/3 lg:w-1/4 mx-auto flex flex-col p-8 rounded shadow bg-white",
-      buy === "t" && "bg-pink-50",
-      buy === "f" && "bg-green-50"
+      "w-full md:w-2/3 lg:w-3/5 xl:w-1/3 mx-auto flex flex-col p-8 rounded shadow bg-gray-700",
+      buy === "t" && "bg-red-900/85",
+      buy === "f" && "bg-green-900/85"
     )
   );
   const radioClass =
@@ -40,9 +41,9 @@ function NewTransctionPage() {
     buy === "t" && "bg-transparent text-black"
   );
   const buttonClass = twMerge(
-    "bg-blue-400 hover:bg-blue-500 mt-6 w-1/3 py-2.5 text-white self-end",
-    buy === "t" && "bg-red-700 hover:bg-red-500 hover:text-white",
-    buy === "f" && "bg-green-700 hover:bg-green-500 hover:text-white"
+    "border-solid border border-gray-200 hover:bg-gray-200 hover:text-gray-800 mt-6 w-1/3 py-2.5 text-white self-end",
+    buy === "t" && "bg-red-700 hover:bg-red-500 hover:text-white border-0",
+    buy === "f" && "bg-green-700 hover:bg-green-500 hover:text-white border-0"
   );
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,8 +54,11 @@ function NewTransctionPage() {
   };
 
   return (
-    <Container className="bg-gray-800 mt-0 pt-10 rounded ">
+    <Container>
       <form className={formClass} onSubmit={handleSubmit}>
+        <div className="text-white text-lg font-bold text-center">
+          {stockName || ""}
+        </div>
         <AuthInput
           type="number"
           label="個股代碼"
@@ -93,7 +97,7 @@ function NewTransctionPage() {
         <AuthInput
           type="number"
           label="每股價格"
-          placeholder="新台幣"
+          placeholder=""
           wrapClassName={wrapclass}
           value={price}
           onChange={(price) => setPrice(price)}
@@ -103,7 +107,7 @@ function NewTransctionPage() {
         <AuthInput
           type="number"
           label="購入股數"
-          placeholder="1張為1000股"
+          placeholder="每張1000股"
           wrapClassName={wrapclass}
           value={quantity}
           onChange={(quantity) => setQuantity(quantity)}

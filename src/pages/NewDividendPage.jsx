@@ -10,7 +10,7 @@ function NewDividendPage() {
 
   return (
     <Container>
-      <FormContainer className="bg-transparent ">
+      <FormContainer className="bg-gray-700 md:w-3/5 lg:w-2/5 xl:w-1/4">
         <form className="flex flex-col">
           <AuthInput
             type="number"
@@ -31,7 +31,7 @@ function NewDividendPage() {
           />
           <AuthInput
             type="date"
-            label="配息發生日"
+            label="配息日期"
             placeholder=""
             value={date}
             onChange={(date) => setDate(date)}
@@ -39,7 +39,7 @@ function NewDividendPage() {
           />
           <Button
             text="新增"
-            buttonClass="bg-blue-400 hover:bg-blue-500 self-end w-1/3 py-2.5"
+            buttonClass="border-solid border border-gray-200 hover:bg-gray-200 hover:text-gray-800 self-end w-1/3 py-2.5 mt-4"
           />
         </form>
       </FormContainer>

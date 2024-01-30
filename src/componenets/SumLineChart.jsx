@@ -12,44 +12,44 @@ import {
 const data = [
   {
     name: "2024.01",
-    uv: 4000,
-    pv: 2400,
+    資產成本: 4000,
+    累積配息: 2400,
     amt: 2400,
   },
   {
     name: "2024/2",
-    uv: 3000,
-    pv: 1398,
+    資產成本: 3000,
+    累積配息: 1398,
     amt: 2210,
   },
   {
     name: "Page C",
-    uv: 2000,
-    pv: 9800,
+    資產成本: 2000,
+    累積配息: 9800,
     amt: 2290,
   },
   {
     name: "Page D",
-    uv: 2780,
-    pv: 3908,
+    資產成本: 2780,
+    累積配息: 3908,
     amt: 2000,
   },
   {
     name: "Page E",
-    uv: 1890,
-    pv: 4800,
+    資產成本: 1890,
+    累積配息: 4800,
     amt: 2181,
   },
   {
     name: "Page F",
-    uv: 2390,
-    pv: 3800,
+    資產成本: 2390,
+    累積配息: 3800,
     amt: 2500,
   },
   {
     name: "Page G",
-    uv: 3490,
-    pv: 4300,
+    資產成本: 3490,
+    累積配息: 4300,
     amt: 2100,
   },
 ];
@@ -69,18 +69,40 @@ function SumLineChart() {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line
-          type="monotone"
-          dataKey="pv"
-          stroke="#8884d8"
-          activeDot={{ r: 8 }}
-          strokeWidth={2}
+        <XAxis
+          dataKey="name"
+          tick={{ fontSize: 18 }}
+          tickMargin={24}
+          angle={-30}
+          height={50}
         />
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        <YAxis
+          label={{
+            value: "資產(NTD)",
+            angle: -90,
+            position: "insideLeft",
+            offset: -5,
+          }}
+          tickMargin={14}
+          width={80}
+        />
+        <Tooltip />
+        <Legend verticalAlign="top" />
+        <Line
+          type="stepAfter"
+          dataKey="累積配息"
+          stroke="#FFBB28"
+          activeDot={{ r: 8 }}
+          strokeWidth={3}
+          isAnimationActive={true}
+        />
+        <Line
+          type="stepAfter"
+          dataKey="資產成本"
+          stroke="#00C49F"
+          strokeWidth={3}
+          activeDot={{ r: 8 }}
+        />
       </LineChart>
     </ResponsiveContainer>
   );

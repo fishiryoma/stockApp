@@ -10,13 +10,19 @@ function StockPage() {
   const { name } = useContext(StockContext);
 
   return (
-    <Container>
+    <Container className="bg-gray-800 text-white">
       <p className="text-3xl mb-6">{`${name.symbol} ${name.name}`}</p>
-      <div className="grid grid-cols-2 grid-rows-2 gap-8 justify-items-center items-center">
-        <AllTransaction />
-        <StockSumTable />
-        <AllDividend />
+      <div className="grid grid-rows-4 lg:grid-rows-2 lg:grid-cols-2 gap-8 lg:gap-20 lg:items-center">
+        <div className="lg:col-start-2 lg:row-start-1 w-full ">
+          <StockSumTable />
+        </div>
         <StockChart />
+        <div className="lg:col-start-1 lg:row-start-1 mx-auto lg:w-full flex justify-center">
+          <AllTransaction />
+        </div>
+        <div className="lg:col-start-1 lg:row-start-2 flex justify-center">
+          <AllDividend />
+        </div>
       </div>
     </Container>
   );

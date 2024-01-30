@@ -47,24 +47,28 @@ function SumPage() {
       id: "4",
     },
   ];
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
   const config = [
-    { label: "#", render: (data) => data.id },
     {
-      label: "個股代碼",
-      render: (data) => data.symbol,
+      label: "股票",
+      render: (data, index) => (
+        <div className="font-bold" style={{ color: COLORS[index] }}>
+          {data.name}
+        </div>
+      ),
     },
-    { label: "名稱", render: (data) => data.name },
     {
-      label: "持有股數",
+      label: "成本比例",
+      render: (data) => data.gain,
+    },
+    {
+      label: "持有張數",
       render: (data) => data.quantity,
     },
     {
       label: "平均成本",
       render: (data) => data.cost,
-    },
-    {
-      label: "收益",
-      render: (data) => data.gain,
     },
     {
       label: "",
@@ -75,21 +79,21 @@ function SumPage() {
         >
           <Button
             text="詳細"
-            buttonClass="bg-blue-400 hover:bg-blue-500 text-sm"
+            buttonClass="bg-gray-500 hover:bg-gray-300 hover:text-gray-800 text-sm"
           />
         </Link>
       ),
     },
   ];
   return (
-    <Container className="flex flex-col items-center gap-6">
-      <p className="text-xl font-bold">資產趨勢</p>
-
-      <SumLineChart />
-
-      <p className="text-xl font-bold">證劵組成</p>
+    <Container className="flex flex-col items-center gap-8 px-1 bg-gray-800 text-white">
+      <p className="m-2 text-2xl font-bold">資產趨勢</p>
+      <div className="w-full h-80 md:w-4/5 md:h-96 lg:w-3/5 ">
+        <SumLineChart />
+      </div>
+      <p className="m-2 mb-0 text-2xl font-bold">證劵組成</p>
       <div className="w-full">
-        <div className="flex justify-center items-center">
+        <div className="flex flex-col justify-center items-center gap-20 md:flex-row md:gap-4">
           <SumPieChart />
           <TableContainer>
             <Table config={config} datas={datas} />

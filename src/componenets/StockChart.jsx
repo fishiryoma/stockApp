@@ -66,18 +66,39 @@ function StockChart() {
           }}
         >
           <CartesianGrid stroke="#f5f5f5" />
-          <XAxis dataKey="name" scale="band" />
-          <YAxis />
+          <XAxis
+            dataKey="name"
+            tick={{ fontSize: 18 }}
+            tickMargin={24}
+            angle={-30}
+            height={50}
+          />
+          <YAxis
+            label={{
+              value: "資產(NTD)",
+              angle: -90,
+              position: "insideLeft",
+              offset: -5,
+            }}
+            tickMargin={14}
+            width={80}
+          />
           <Tooltip />
-          <Legend />
+          <Legend verticalAlign="top" />
           <Area
             type="monotone"
             dataKey="持有股數"
-            fill="#8884d8"
-            stroke="#8884d8"
+            fill="#ffec99"
+            stroke="#e67700"
           />
-          <Bar dataKey="正效益" barSize={20} fill="#413ea0" />
-          <Line type="monotone" dataKey="配息金額" stroke="#ff7300" />
+          <Bar dataKey="正效益" barSize={20} fill="#40c057" />
+          <Line
+            type="monotone"
+            dataKey="配息金額"
+            stroke="#1098ad"
+            activeDot={{ r: 8 }}
+            strokeWidth={3}
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

@@ -29,8 +29,8 @@ function LoginPage() {
   }
 
   return (
-    <Container>
-      <FormContainer>
+    <Container className="bg-white">
+      <FormContainer className="md:w-2/3 lg:w-2/5 xl:w-1/4">
         <p className="text-xl text-center font-bold">登入</p>
         <form onSubmit={handleSubmit}>
           <Input
@@ -38,6 +38,7 @@ function LoginPage() {
             label="使用者信箱"
             value={email}
             placeholder=""
+            labelClassName="text-gray-800"
             onChange={(email) => setEmail(email)}
             required
           />
@@ -46,6 +47,7 @@ function LoginPage() {
             label="密碼"
             value={password}
             placeholder=""
+            labelClassName="text-gray-800"
             onChange={(password) => setPassword(password)}
             required
           />

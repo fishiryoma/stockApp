@@ -54,8 +54,8 @@ function AllTransaction() {
   ];
 
   return (
-    <TableContainer>
-      <p className="text-2xl">交易紀錄</p>
+    <TableContainer tableClass="w-96 sm:w-full lg:w-full 2xl:w-4/5">
+      <p className="text-2xl font-bold mb-4">交易紀錄</p>
       <Table config={config} datas={datas} />
     </TableContainer>
   );

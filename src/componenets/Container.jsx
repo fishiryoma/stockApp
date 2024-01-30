@@ -8,12 +8,13 @@ function FormContainer({ children, className }) {
   return <div className={classes}>{children}</div>;
 }
 
-function TableContainer({ children }) {
-  return <div className="container w-full lg:w-1/2">{children}</div>;
+function TableContainer({ children, tableClass }) {
+  const classes = twMerge("w-full lg:w-1/2", tableClass);
+  return <div className={classes}>{children}</div>;
 }
 
 function Container({ children, className }) {
-  const classes = twMerge("mt-10 px-6 h-full", className);
+  const classes = twMerge("py-10 px-3 md:px-6 flex-grow", className);
 
   return <div className={classes}>{children}</div>;
 }

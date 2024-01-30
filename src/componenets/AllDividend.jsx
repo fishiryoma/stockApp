@@ -1,4 +1,4 @@
-import { Container, TableContainer } from "./Container";
+import { TableContainer } from "./Container";
 import Table from "./Table";
 
 function AddDividend() {
@@ -41,29 +41,9 @@ function AddDividend() {
     },
   ];
 
-  // const renderedStockList = datas.map((item) => (
-  //   <li key={item.Stock.symbol}>
-  //     <a>
-  //       <div>{item.Stock.symbol}</div>
-  //       <div className="flex justify-center">{item.Stock.name}</div>
-  //     </a>
-  //   </li>
-  // ));
-
   return (
-    <TableContainer>
-      {/* <div className="dropdown dropdown-bottom mb-4">
-          <div tabIndex={0} role="button" className="btn m-1">
-            選擇股票
-          </div>
-          <ul
-            tabIndex={0}
-            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            {renderedStockList}
-          </ul>
-        </div> */}
-      <p className="text-2xl">配息紀錄</p>
+    <TableContainer tableClass="w-96 sm:w-full lg:w-full 2xl:w-4/5">
+      <p className="text-2xl font-bold mb-4">配息紀錄</p>
       <Table config={config} datas={datas} />
     </TableContainer>
   );
