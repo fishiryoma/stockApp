@@ -1,63 +1,103 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const baseUrl = "";
-const authorization = {
-  headers: {
-    Authorization: "Bearer Token",
-  },
-};
+// const authorization = {
+//   headers: {
+//     Authorization: "Bearer Token",
+//   },
+// };
 
-export const getNameBySymbol = async (symbol) => {
+const stockAPI = axios.create({
+  baseURL: baseUrl,
+});
+stockAPI.interceptors.request.use(
+  (config) => {
+    // get Token
+    // Cookies.set("token_StockApp", data.data.authToken);
+    const token = Cookies.get("token_StockApp");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (err) => {
+    console.log(err);
+  }
+);
+
+// 驗證股票代碼是否正確
+export const getNameBySymbol = async ({ symbol }) => {
   try {
-    const { data } = await axios.post(`${baseUrl}/api/${symbol}`, {
-      Params: symbol,
-      type: "String",
-      description: "股票代號",
+    const { data } = await stockAPI.post(`/api/${symbol}`, {
+      symbol,
     });
-    return data.stock;
+    // data.success判斷輸入股票代碼是否正確
+    return data;
   } catch (err) {
     console.log(`Get Stock Name Failed ${err}`);
   }
 };
 
-export const getInfoBySymbol = async (symbol) => {
+// 依股票ID獲取資料
+export const getAbstractByStockId = async (stockId) => {
   try {
-    const { data } = await axios.get(`${baseUrl}/api/stocks/${symbol}`, {
-      Params: symbol,
-      Required: true,
-      Type: "String",
-      Description: "股票代號",
-      authorization,
+    const { data } = await stockAPI.get(`/api/stocks/${stockId}/abstract`, {
+      stockId,
     });
+    // data.success判斷庫存是否有這支股票
     return data;
   } catch (err) {
     console.log(`Get Stock Info Failed ${err}`);
   }
 };
 
+export const getTransactionByStockId = async (stockId, page) => {
+  try {
+    const { data } = await stockAPI.get(`/api/stocks/${stockId}/transactions`, {
+      stockId,
+      page,
+    });
+    // 拿到所有交易紀錄
+    return data.data.transactions;
+  } catch (err) {
+    console.log(`Get Stock Info Failed ${err}`);
+  }
+};
+
+export const getDividendByStockId = async (stockId, page) => {
+  try {
+    const { data } = await stockAPI.get(`/api/stocks/${stockId}/dividends`, {
+      stockId,
+      page,
+    });
+    // 拿到所有配息紀錄
+    return data.data.dividends;
+  } catch (err) {
+    console.log(`Get Stock Info Failed ${err}`);
+  }
+};
+
+// 新增、刪除交易紀錄
 export const createTransc = async ({
-  date,
+  transDate,
   isBuy,
   quantity,
-  price,
+  pricePerUnit,
   fee,
   note,
-  symbol,
+  stockId,
 }) => {
   try {
-    const { data } = await axios.post(
-      `${baseUrl}/api/transactions`,
-      {
-        date,
-        isBuy,
-        quantity,
-        pricePerUnit: price,
-        fee,
-        note,
-        stockId: symbol,
-      },
-      authorization
-    );
+    const { data } = await stockAPI.post(`/api/transactions`, {
+      transDate,
+      isBuy,
+      quantity,
+      pricePerUnit,
+      fee,
+      note,
+      stockId,
+    });
     return data;
   } catch (err) {
     console.log(`Create Transaction Failed ${err}`);
@@ -66,14 +106,10 @@ export const createTransc = async ({
 
 export const getTranscById = async (id) => {
   try {
-    const { data } = await axios.get(`${baseUrl}/api/transactions/${id}`, {
-      Params: id,
-      Required: "required",
-      Type: "integer",
-      Description: "transaction id",
-      authorization,
+    const { data } = await stockAPI.get(`/api/transactions/${id}`, {
+      id,
     });
-    return data.transaction;
+    return data;
   } catch (err) {
     console.log(`Get Transaction Failed ${err}`);
   }
@@ -81,12 +117,8 @@ export const getTranscById = async (id) => {
 
 export const deleteTranscById = async (id) => {
   try {
-    const { data } = await axios.delete(`${baseUrl}/api/transactions/${id}`, {
-      Params: id,
-      Required: "required",
-      Type: "integer",
-      Description: "transaction id",
-      authorization,
+    const { data } = await stockAPI.delete(`/api/transactions/${id}`, {
+      id,
     });
     return data.success;
   } catch (err) {
@@ -94,18 +126,15 @@ export const deleteTranscById = async (id) => {
   }
 };
 
-export const createDividend = async ({ date, amount, symbol }) => {
+// 新增、刪除修改股利
+export const createDividend = async ({ dividendDate, amount, stockId }) => {
   try {
-    const { data } = await axios.post(
-      `${baseUrl}/api/dividends`,
-      {
-        date,
-        amount,
-        stockId: symbol,
-      },
-      authorization
-    );
-    return data.dividend;
+    const { data } = await stockAPI.post(`/api/dividends`, {
+      dividendDate,
+      amount,
+      stockId,
+    });
+    return data;
   } catch (err) {
     console.log(`Create Dividend Failed ${err}`);
   }
@@ -113,37 +142,34 @@ export const createDividend = async ({ date, amount, symbol }) => {
 
 export const getDividendById = async (id) => {
   try {
-    const { data } = await axios.get(`${baseUrl}/api/dividends/${id}`, {
-      Params: id,
-      Required: "required",
-      Type: "integer",
-      Description: "dividend id",
-      authorization,
+    const { data } = await stockAPI.get(`/api/dividends/${id}`, {
+      id,
     });
-    return data.dividend;
+    return data;
   } catch (err) {
     console.log(`Get Dividend Failed ${err}`);
   }
 };
 
-export const editDividendById = async ({ id, date, amount, symbol }) => {
+export const editDividendById = async ({
+  id,
+  dividendDate,
+  amount,
+  stockId,
+}) => {
   try {
-    const { data } = await axios.put(
-      `${baseUrl}/api/dividends/${id}`,
+    const { data } = await stockAPI.put(
+      `/api/dividends/${id}`,
       {
-        dividendDate: date,
+        dividendDate,
         amount,
-        stockId: symbol,
+        stockId,
       },
       {
-        Params: id,
-        Required: "required",
-        Type: "integer",
-        Description: "dividend id",
-        authorization,
+        id,
       }
     );
-    return data.dividend;
+    return data;
   } catch (err) {
     console.log(`Edit Dividend Failed ${err}`);
   }
@@ -151,15 +177,30 @@ export const editDividendById = async ({ id, date, amount, symbol }) => {
 
 export const deleteDividendById = async (id) => {
   try {
-    const { data } = await axios.delete(`${baseUrl}/api/dividends/${id}`, {
-      Params: id,
-      Required: "required",
-      Type: "integer",
-      Description: "dividend id",
-      authorization,
+    const { data } = await stockAPI.delete(`/api/dividends/${id}`, {
+      id,
     });
     return data.success;
   } catch (err) {
     console.log(`Delete Dividend Failed ${err}`);
+  }
+};
+
+// 用戶資料總整API
+export const getRecapCost = async () => {
+  try {
+    const { data } = await stockAPI.get(`/api/recap/cost`);
+    return data;
+  } catch (err) {
+    console.log(`Get Recap Failed ${err}`);
+  }
+};
+
+export const getRecapDividend = async () => {
+  try {
+    const { data } = await stockAPI.get(`/api/recap/dividends`);
+    return data;
+  } catch (err) {
+    console.log(`Get RecapDividend Failed ${err}`);
   }
 };

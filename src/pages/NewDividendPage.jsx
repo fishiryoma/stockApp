@@ -4,20 +4,20 @@ import Button from "../componenets/Button";
 import { useState } from "react";
 
 function NewDividendPage() {
-  const [symbol, setSymbol] = useState("");
+  const [stockId, setStockId] = useState("");
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
+  const [dividendDate, setDividendDate] = useState("");
 
   return (
-    <Container>
+    <Container className="bg-gray-800">
       <FormContainer className="bg-gray-700 md:w-3/5 lg:w-2/5 xl:w-1/4">
         <form className="flex flex-col">
           <AuthInput
             type="number"
             label="個股代碼"
             placeholder="00878"
-            value={symbol}
-            onChange={(symbol) => setSymbol(symbol)}
+            value={stockId}
+            onChange={(stockId) => setStockId(stockId)}
             required
           />
           <AuthInput
@@ -33,8 +33,8 @@ function NewDividendPage() {
             type="date"
             label="配息日期"
             placeholder=""
-            value={date}
-            onChange={(date) => setDate(date)}
+            value={dividendDate}
+            onChange={(dividendDate) => setDividendDate(dividendDate)}
             required
           />
           <Button

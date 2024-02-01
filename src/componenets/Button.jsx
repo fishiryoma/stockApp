@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import classNames from "classnames";
 
-function Button({ text, buttonClass }) {
+function Button({ text, buttonClass, ...rest }) {
   const classes = twMerge(
     classNames(
       "rounded-md py-1 px-3.5 shadow text-white bg-transparent",
@@ -9,7 +9,11 @@ function Button({ text, buttonClass }) {
     )
   );
 
-  return <button className={classes}>{text}</button>;
+  return (
+    <button className={classes} {...rest}>
+      {text}
+    </button>
+  );
 }
 
 export default Button;

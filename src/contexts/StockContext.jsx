@@ -1,20 +1,18 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
-const StockContext = createContext();
+export const StockContext = createContext();
 
 function StockProvider({ children }) {
-  const [name, setName] = useState("");
-
-  const getName = (data) => {
-    setName(data);
+  const [stockBtn, setStockBtn] = useState("");
+  const getStockBtn = (data) => {
+    setStockBtn(data);
   };
 
   return (
-    <StockContext.Provider value={{ name, getName }}>
+    <StockContext.Provider value={{ stockBtn, getStockBtn }}>
       {children}
     </StockContext.Provider>
   );
 }
 
-export default StockContext;
-export { StockProvider };
+export default StockProvider;

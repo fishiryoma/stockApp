@@ -1,43 +1,31 @@
 import { Container, TableContainer } from "./Container";
 import Table from "./Table";
+import Button from "./Button";
+import { deleteTranscById } from "../api/stock";
 
-function AllTransaction() {
-  const datas = [
-    {
-      id: 5,
-      transDate: "2023-03-01",
-      quantity: 1000,
-      pricePerUnit: 16.9,
-      fee: 20,
-      note: "定期定額",
-      userId: 1,
-      stockId: 1,
-    },
-    {
-      id: 6,
-      transDate: "2023-03-01",
-      quantity: 1000,
-      pricePerUnit: 16.9,
-      fee: 20,
-      note: "定期定額",
-      userId: 1,
-      stockId: 1,
-    },
-    {
-      id: 7,
-      transDate: "2023-03-01",
-      quantity: 1000,
-      pricePerUnit: 16.9,
-      fee: 20,
-      note: "定期定額",
-      userId: 1,
-      stockId: 1,
-    },
-  ];
+function AllTransaction({ datas }) {
+  // const hanldeDelete = async(id)=>{
+  //   try {
+  //     const res = await deleteTranscById();
+  //     if (res) console.log("ok");
+  //   } catch (err) {
+  //     console.log(`Delete Transaction Failed ${err}`);
+  //   }
+  // }
+
   const config = [
     {
       label: "交易日",
       render: (data) => data.transDate,
+    },
+    {
+      label: "成交",
+      render: (data) =>
+        data.isBuy ? (
+          <div className="text-red-500">買進</div>
+        ) : (
+          <div className="text-green-500">賣出</div>
+        ),
     },
     {
       label: "交易量",
@@ -45,11 +33,25 @@ function AllTransaction() {
     },
     {
       label: "每股價格",
-      render: (data) => data.pricePerUnit,
+      render: (data) => data.pricePerUnit.toFixed(2),
+    },
+    {
+      label: "手續費",
+      render: (data) => data.fee,
     },
     {
       label: "備註",
       render: (data) => data.note,
+    },
+    {
+      label: "",
+      render: (data) => (
+        <Button
+          text="刪除"
+          buttonClass="bg-red-700 hover:bg-red-500 hover:text-white text-sm px-1.5"
+          // onClick={() => {hanldeDelete}}
+        />
+      ),
     },
   ];
 

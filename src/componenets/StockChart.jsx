@@ -50,14 +50,23 @@ const data = [
   },
 ];
 
-function StockChart() {
+function StockChart({ datas }) {
+  const rendered = datas.map((data) => {
+    return {
+      name: data.dividendDate,
+      持有股數: data.sharesHold,
+      配息金額: data.amount.toFixed(3),
+      正效益: (data.amount * data.sharesHold).toFixed(0),
+    };
+  });
+
   return (
     <div style={{ width: "100%", height: 300 }}>
       <ResponsiveContainer>
         <ComposedChart
           width={500}
           height={400}
-          data={data}
+          data={rendered}
           margin={{
             top: 20,
             right: 20,
@@ -68,36 +77,60 @@ function StockChart() {
           <CartesianGrid stroke="#f5f5f5" />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 18 }}
+            tick={{ fontSize: 16, stroke: "#f1f5f9" }}
             tickMargin={24}
             angle={-30}
             height={50}
           />
           <YAxis
+            yAxisId={0}
             label={{
               value: "資產(NTD)",
               angle: -90,
-              position: "insideLeft",
-              offset: -5,
+              position: "insideBottomLeft",
+              stroke: "#f1f5f9",
             }}
             tickMargin={14}
             width={80}
+            tick={{ stroke: "#f1f5f9" }}
           />
-          <Tooltip />
+          <YAxis
+            yAxisId={1}
+            orientation="right"
+            label={{
+              value: "配息(塊)",
+              angle: -90,
+              position: "insideRight",
+              stroke: "#f1f5f9",
+            }}
+            tickMargin={14}
+            width={80}
+            tick={{ stroke: "#f1f5f9" }}
+          />
+
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "rgb(55, 65, 81, 0.93)",
+              border: "none",
+            }}
+          />
           <Legend verticalAlign="top" />
-          <Area
+          <Bar dataKey="正效益" barSize={20} fill="#facc15" yAxisId={0} />
+          <Line
             type="monotone"
             dataKey="持有股數"
-            fill="#ffec99"
-            stroke="#e67700"
+            stroke="#34d399"
+            activeDot={{ r: 8 }}
+            strokeWidth={3}
+            yAxisId={0}
           />
-          <Bar dataKey="正效益" barSize={20} fill="#40c057" />
           <Line
             type="monotone"
             dataKey="配息金額"
-            stroke="#1098ad"
+            stroke="#fb7185"
             activeDot={{ r: 8 }}
             strokeWidth={3}
+            yAxisId={1}
           />
         </ComposedChart>
       </ResponsiveContainer>

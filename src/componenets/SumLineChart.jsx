@@ -71,7 +71,7 @@ function SumLineChart() {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="name"
-          tick={{ fontSize: 18 }}
+          tick={{ fontSize: 18, stroke: "#f1f5f9" }}
           tickMargin={24}
           angle={-30}
           height={50}
@@ -82,11 +82,18 @@ function SumLineChart() {
             angle: -90,
             position: "insideLeft",
             offset: -5,
+            stroke: "#f1f5f9",
           }}
           tickMargin={14}
           width={80}
+          tick={{ stroke: "#f1f5f9" }}
         />
-        <Tooltip />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: "rgb(55, 65, 81, 0.93)",
+            border: "none",
+          }}
+        />
         <Legend verticalAlign="top" />
         <Line
           type="stepAfter"

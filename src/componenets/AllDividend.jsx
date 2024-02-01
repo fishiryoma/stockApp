@@ -1,35 +1,16 @@
 import { TableContainer } from "./Container";
 import Table from "./Table";
+import Button from "./Button";
 
-function AddDividend() {
-  const datas = [
-    {
-      id: "1",
-      Stock: {
-        symbol: "00878",
-        name: "國泰永續高股息",
-      },
-      sharesHold: 3000,
-      dividendDate: "2023-10-19",
-      amount: "2",
-    },
-    {
-      id: "2",
-      sharesHold: 3000,
-      dividendDate: "2023-02-19",
-      amount: "1.2",
-    },
-  ];
+function AddDividend({ datas }) {
   const config = [
-    { label: "#", render: (data) => data.id },
-
     {
       label: "配息日",
       render: (data) => data.dividendDate,
     },
     {
       label: "配息金額",
-      render: (data) => data.amount,
+      render: (data) => data.amount.toFixed(3),
     },
     {
       label: "持有股份",
@@ -38,6 +19,23 @@ function AddDividend() {
     {
       label: "正效益",
       render: (data) => data.sharesHold * data.amount,
+    },
+    {
+      label: "",
+      render: (data) => (
+        <div className="flex gap-1">
+          <Button
+            text="編輯"
+            buttonClass="bg-cyan-600 hover:bg-cyan-400 hover:text-white text-sm px-1.5"
+            // onClick={() => {hanldeEdit}}
+          />
+          <Button
+            text="刪除"
+            buttonClass="bg-red-700 hover:bg-red-500 hover:text-white text-sm px-1.5"
+            // onClick={() => {hanldeDelete}}
+          />
+        </div>
+      ),
     },
   ];
 

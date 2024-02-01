@@ -1,32 +1,34 @@
 import { Container, FormContainer } from "../componenets/Container";
 import Button from "../componenets/Button";
 import Input from "../componenets/Input";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { login, checkPermission } from "../api/auth";
 import Cookies from "js-cookie";
+import { useAuth } from "../hooks/useAuth";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // const { isAuthenticated } = useAuth();
+  // const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/sum");
+  //   }
+  // }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("testlogin");
-    login({ email, password });
-  }
-  function handleClick() {
-    // console.log(localStorage.getItem("authToken"));
-    // const token = localStorage.getItem("authToken");
-    // checkPermission(token);
-    // Cookies.set("testCookie", "ccc");
-    // console.log(Cookies.get("testCookie"));
-    const cookie = Cookies.get("token_StockApp");
-    checkPermission(cookie);
-    // checkPermission(
-    //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwib…wNTd9.OFyHf32HabGNX67H_GCxOSZ0gDYNXvZq9Wx1Yfu29Kg"
-    // );
-  }
+    try {
+      const { data } = await login({ email, password });
+      if (data.success) console.log("success");
+    } catch (err) {
+      console.log(`Login Failed ${err}`);
+    }
+  };
 
   return (
     <Container className="bg-white">
@@ -61,7 +63,6 @@ function LoginPage() {
             <Button text="登入" buttonClass="bg-blue-400 hover:bg-blue-500" />
           </div>
         </form>
-        {/* <button onClick={handleClick}>CHECK</button> */}
       </FormContainer>
     </Container>
   );
