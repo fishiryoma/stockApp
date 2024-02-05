@@ -1,12 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const baseUrl = "";
-// const authorization = {
-//   headers: {
-//     Authorization: "Bearer Token",
-//   },
-// };
+const baseUrl = "http://stockproject-dev.ap-northeast-1.elasticbeanstalk.com";
 
 const stockAPI = axios.create({
   baseURL: baseUrl,
@@ -14,7 +9,6 @@ const stockAPI = axios.create({
 stockAPI.interceptors.request.use(
   (config) => {
     // get Token
-    // Cookies.set("token_StockApp", data.data.authToken);
     const token = Cookies.get("token_StockApp");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,12 +21,12 @@ stockAPI.interceptors.request.use(
 );
 
 // 驗證股票代碼是否正確
-export const getNameBySymbol = async ({ symbol }) => {
+export const getNameBySymbol = async (symbol) => {
   try {
-    const { data } = await stockAPI.post(`/api/${symbol}`, {
+    const { data } = await stockAPI.post(`/api/symbol`, {
       symbol,
     });
-    // data.success判斷輸入股票代碼是否正確
+    // console.log(data);
     return data;
   } catch (err) {
     console.log(`Get Stock Name Failed ${err}`);
@@ -52,51 +46,56 @@ export const getAbstractByStockId = async (stockId) => {
   }
 };
 
-export const getTransactionByStockId = async (stockId, page) => {
+// 個股資料統整
+export const getTranscByStockId = async (id, page = 1) => {
   try {
-    const { data } = await stockAPI.get(`/api/stocks/${stockId}/transactions`, {
-      stockId,
-      page,
-    });
-    // 拿到所有交易紀錄
-    return data.data.transactions;
+    const { data } = await stockAPI.get(
+      `/api/stocks/${id}/transactions?page=${page}`
+    );
+    return data;
   } catch (err) {
-    console.log(`Get Stock Info Failed ${err}`);
+    console.log(`Get RecapTransaction Failed ${err}`);
   }
 };
-
-export const getDividendByStockId = async (stockId, page) => {
+export const getDividendByStockId = async (id, page = 1) => {
   try {
-    const { data } = await stockAPI.get(`/api/stocks/${stockId}/dividends`, {
-      stockId,
-      page,
-    });
-    // 拿到所有配息紀錄
-    return data.data.dividends;
+    const { data } = await stockAPI.get(
+      `/api/stocks/${id}/dividends?page=${page}`
+    );
+    return data;
   } catch (err) {
-    console.log(`Get Stock Info Failed ${err}`);
+    console.log(`Get Recap Dividend Failed ${err}`);
   }
 };
 
 // 新增、刪除交易紀錄
 export const createTransc = async ({
-  transDate,
-  isBuy,
-  quantity,
+  stockId,
   pricePerUnit,
+  quantity,
+  transDate,
   fee,
   note,
-  stockId,
+  isBuy,
 }) => {
+  console.log({
+    stockId,
+    pricePerUnit,
+    quantity,
+    transDate,
+    fee,
+    note,
+    isBuy,
+  });
   try {
     const { data } = await stockAPI.post(`/api/transactions`, {
-      transDate,
-      isBuy,
-      quantity,
+      stockId,
       pricePerUnit,
+      quantity,
+      transDate,
       fee,
       note,
-      stockId,
+      isBuy,
     });
     return data;
   } catch (err) {
@@ -202,5 +201,27 @@ export const getRecapDividend = async () => {
     return data;
   } catch (err) {
     console.log(`Get RecapDividend Failed ${err}`);
+  }
+};
+
+export const getRecapDiagram = async (period) => {
+  try {
+    const { data } = await stockAPI.post("/api/recap/recap-diagram", {
+      period,
+    });
+    // console.log(data);
+    return data;
+  } catch (err) {
+    console.log(`Get RecapDiagram Failed ${err}`);
+  }
+};
+
+export const getRecapMargin = async () => {
+  try {
+    const { data } = await stockAPI.get("/api/recap/margin");
+    // console.log(data);
+    return data;
+  } catch (err) {
+    console.log(`Get RecapMargin Failed ${err}`);
   }
 };

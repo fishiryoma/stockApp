@@ -1,11 +1,7 @@
-// import { twMerge } from "tailwind-merge";
-
 function Table({ config, datas }) {
-  // const classes = twMerge("");
-
   const rederedThead = config.map((column) => (
     <th
-      className="text-lg text-center align-middle text-white"
+      className="text-sm md:text-lg text-center align-middle text-white"
       key={column.label}
     >
       {column.label}
@@ -14,7 +10,10 @@ function Table({ config, datas }) {
   const renderedTbody = datas.map((row, index) => (
     <tr key={row.id}>
       {config.map((column) => (
-        <td className="text-lg text-center align-middle" key={column.label}>
+        <td
+          className="text-sm md:text-base text-center align-middle py-1.5"
+          key={column.label}
+        >
           {column.render(row, index)}
         </td>
       ))}
@@ -23,7 +22,7 @@ function Table({ config, datas }) {
 
   return (
     <div>
-      <div className="overflow-x-auto shadow rounded">
+      <div className="overflow-x-auto shadow rounded w-full">
         <table className="table">
           <thead>
             <tr>{rederedThead}</tr>

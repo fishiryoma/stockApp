@@ -9,7 +9,7 @@ function FormContainer({ children, className }) {
 }
 
 function TableContainer({ children, tableClass }) {
-  const classes = twMerge("w-full lg:w-1/2", tableClass);
+  const classes = twMerge("w-full", tableClass);
   return <div className={classes}>{children}</div>;
 }
 

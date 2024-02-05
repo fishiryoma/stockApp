@@ -13,8 +13,8 @@ function RegisterPage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("test");
-    console.log(email, password, checkPassword);
+    // console.log("test");
+    console.log(username, email, password, checkPassword);
     register({ username, email, password, checkPassword });
   }
   return (
@@ -28,7 +28,7 @@ function RegisterPage() {
             placeholder=""
             labelClassName="text-gray-800"
             value={username}
-            onChange={(username) => setUsername(username)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <Input
             type="email"
@@ -36,7 +36,7 @@ function RegisterPage() {
             value={email}
             placeholder=""
             labelClassName="text-gray-800"
-            onChange={(email) => setEmail(email)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input
@@ -46,7 +46,7 @@ function RegisterPage() {
             pattern="^[a-zA-Z0-9]{4,}$"
             placeholder="請輸入4位以上英數字"
             labelClassName="text-gray-800"
-            onChange={(password) => setPassword(password)}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <Input
@@ -56,7 +56,7 @@ function RegisterPage() {
             pattern="^[a-zA-Z0-9]{4,}$"
             placeholder="請輸入4位以上英數字"
             labelClassName="text-gray-800"
-            onChange={(password) => setCheckPassword(password)}
+            onChange={(e) => setCheckPassword(e.target.value)}
             required
           />
           <div className="flex justify-center gap-x-4 mt-6">

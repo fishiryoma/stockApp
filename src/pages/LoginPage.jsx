@@ -41,7 +41,7 @@ function LoginPage() {
             value={email}
             placeholder=""
             labelClassName="text-gray-800"
-            onChange={(email) => setEmail(email)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input
@@ -50,7 +50,7 @@ function LoginPage() {
             value={password}
             placeholder=""
             labelClassName="text-gray-800"
-            onChange={(password) => setPassword(password)}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <div className="flex justify-center gap-x-4 mt-6">

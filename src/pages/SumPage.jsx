@@ -5,173 +5,123 @@ import { Link } from "react-router-dom";
 import SumPieChartCost from "../componenets/SumPieChartCost";
 import SumPieChartDividend from "../componenets/SumPieChartDividend";
 import SumLineChart from "../componenets/SumLineChart";
-import SumMarginChart from "../componenets/SumMarginChart";
-import { getRecapCost, getRecapDividend } from "../api/stock";
-import { useState } from "react";
+// import SumMarginChart from "../componenets/SumMarginChart";
+import SumMarginChart_copy from "../componenets/SumMarginChart_copy";
+import {
+  getRecapCost,
+  getRecapDividend,
+  getRecapDiagram,
+  getRecapMargin,
+} from "../api/stock";
+import { useState, useEffect } from "react";
 import { useStock } from "../hooks/useStock";
-
-const totalCost = 292452;
-const totalIncome = 18786;
-const totalMargin = 100510;
-const dummyCost = [
-  {
-    id: 2,
-    symbol: "0056",
-    name: "元大高股息",
-    sharesHold: 5000,
-    stockCost: 167387,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    sharesHold: 2000,
-    stockCost: 125065,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    sharesHold: 2000,
-    stockCost: 125065,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    sharesHold: 2000,
-    stockCost: 125065,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    sharesHold: 2000,
-    stockCost: 125065,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    sharesHold: 2000,
-    stockCost: 125065,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    sharesHold: 2000,
-    stockCost: 125065,
-  },
-];
-const dummyDividend = [
-  {
-    id: 2,
-    symbol: "0056",
-    name: "元大高股息",
-    stockIncome: 12300,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    stockIncome: 1486,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    stockIncome: 1486,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    stockIncome: 1486,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    stockIncome: 1486,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    stockIncome: 1486,
-  },
-];
 
 const dummyMargin = [
   {
     id: 5,
     symbol: "2330",
     name: "台積電",
-    stockMargin: 850,
+    stockMargin: 8450,
   },
   {
     id: 6,
     symbol: "006208",
     name: "富邦台50",
-    stockMargin: 1560,
+    stockMargin: 4560,
   },
   {
     id: 1,
     symbol: "00878",
     name: "國泰永續高股息",
-    stockMargin: -900,
+    stockMargin: 1900,
   },
   {
-    id: 1,
+    id: 2,
     symbol: "00878",
     name: "國泰永續高股息",
     stockMargin: -900,
   },
   {
-    id: 1,
-    symbol: "00878",
-    name: "國泰永續高股息",
-    stockMargin: -900,
+    id: 10,
+    symbol: "0056",
+    name: "富邦??",
+    stockMargin: -4200,
   },
   {
-    id: 1,
-    symbol: "00878",
+    id: 12,
+    symbol: "1234",
     name: "國泰永續高股息",
-    stockMargin: -900,
+    stockMargin: -4540,
   },
   {
-    id: 1,
-    symbol: "00878",
+    id: 13,
+    symbol: "008",
     name: "國泰永續高股息",
-    stockMargin: -900,
-  },
-  {
-    id: 1,
-    symbol: "00878",
-    name: "國泰永續高股息",
-    stockMargin: -900,
+    stockMargin: -9100,
   },
 ];
 
 function SumPage() {
-  // const [costRecap, setCostRecap] = useState();
-  // const [total, setTotalCost] = useState();
-  // const [dividendRecap, setDividendReCap] = useState();
-  // const [totalIncome, setTotalIncome] = useState();
+  const [diagramRecap, setDiagramRecap] = useState([]);
+  const [costRecap, setCostRecap] = useState([]);
+  const [dividendRecap, setDividendReCap] = useState([]);
+  const [marginRecap, setMarginRecap] = useState([]);
+
   const { getStockBtn } = useStock();
-  // useEffect(() => {
-  //   const getRecapData = async () => {
-  //     const costRes = await getRecapCost();
-  //     const dividendRes = await getRecapDividend();
-  //     if (costRes.success && dividendRes.success) {
-  //       setCostRecap(costRes.data.costRecap);
-  // setTotalCost(costRes.data.totalCost);
-  //       setDividendReCap(dividendRes.data);
-  //       setTotalIncome(dividendRes.data.dividendsRecap);
-  //     }
-  //   };
-  // }, []);
+
+  //  處理數據成表格能用的格式
+  const getDiagramData = (variable) => {
+    const result = [];
+    for (let i = 0; i < variable.monthArr.length; i++) {
+      const obj = {};
+      obj.累積配息 = [variable.accIncomeArr[i]];
+      obj.花費成本 = [variable.investmentCostArr[i]];
+      obj.time = [variable.monthArr[i]];
+      result.push(obj);
+    }
+    return result;
+  };
+
+  useEffect(() => {
+    const getRecapData = async () => {
+      try {
+        // 取得總覽線圖
+        const diagramData = await getRecapDiagram(1);
+        if (diagramData.success) {
+          setDiagramRecap(getDiagramData(diagramData.data));
+        }
+        // 取得交易紀錄圓餅圖
+        const costData = await getRecapCost();
+        if (costData.success) {
+          setCostRecap([{ costData: costData.data }]);
+        }
+        // 取得股利交易紀錄圓餅圖
+        const dividnedData = await getRecapDividend();
+        if (dividnedData.success) {
+          setDividendReCap([{ dividnedData: dividnedData.data }]);
+        }
+        const marginData = await getRecapMargin();
+
+        if (marginData.success) {
+          setMarginRecap([{ marginData: marginData.data }]);
+        }
+      } catch (err) {
+        console.log(`Get RecapData Failed ${err}`);
+      }
+    };
+    getRecapData();
+  }, []);
+
+  const handleDiagramChange = async (period) => {
+    try {
+      const res = await getRecapDiagram(period);
+      if (res.success) {
+        setDiagramRecap(getDiagramData(res.data));
+      }
+    } catch (err) {
+      console.log(`Get Diagram Data Failed ${err}`);
+    }
+  };
 
   const costCOLORS = [
     "#0088FE",
@@ -183,14 +133,14 @@ function SumPage() {
   ];
   const dividendCOLORS = [
     "#FFBB28",
-    "#FF8042",
-    "#ef4444",
-    "#9333ea",
-    "#0088FE",
     "#00C49F",
+    "#0088FE",
+    "#ef4444",
+    "#FF8042",
+    "#9333ea",
   ];
 
-  const constConfig = [
+  const costConfig = [
     {
       label: "股票",
       render: (data, index) => (
@@ -201,11 +151,14 @@ function SumPage() {
     },
     {
       label: "成本比例",
-      render: (data) => `${((data.stockCost / totalCost) * 100).toFixed(0)}%`,
+      render: (data) =>
+        `${((data.stockCost / costRecap[0].costData.totalCost) * 100).toFixed(
+          0
+        )}%`,
     },
     {
       label: "持有張數",
-      render: (data) => data.sharesHold,
+      render: (data) => (data.sharesHold / 1000).toFixed(2),
     },
     {
       label: "平均成本",
@@ -239,30 +192,41 @@ function SumPage() {
     {
       label: "配息占比",
       render: (data) =>
-        `${((data.stockIncome / totalIncome) * 100).toFixed(0)}%`,
+        `${(
+          (data.stockIncome / dividendRecap[0].dividnedData.totalIncome) *
+          100
+        ).toFixed(0)}%`,
     },
     {
       label: "累積配息",
-      render: (data) => data.stockIncome,
+      render: (data) => data.stockIncome.toLocaleString("zh-TW"),
     },
   ];
+  // console.log(marginRecap[0].marginData, "aaa");
   return (
-    <Container className="flex flex-col items-center gap-12 px-1 bg-gray-800 text-white">
+    <Container className="flex flex-col items-center gap-12 px-1 bg-gray-800 text-white h-100">
       <p className="m-2 text-2xl font-bold">資產趨勢</p>
-      <div className="w-full h-80 md:w-4/5 md:h-96 lg:w-3/5 ">
-        <SumLineChart />
+      <div className="w-full h-80 md:w-4/5 md:h-96 lg:w-3/5 mb-10">
+        <SumLineChart
+          datas={diagramRecap}
+          handleDiagramChange={handleDiagramChange}
+        />
       </div>
       <p className="m-2 mb-0 text-2xl font-bold">證劵組成</p>
+
       <div className="w-full">
         <div className="flex flex-col justify-center items-center gap-10 md:flex-row md:gap-4">
-          <SumPieChartCost
-            datas={dummyCost}
-            total={totalCost}
-            COLORS={costCOLORS}
-          />
-          <TableContainer>
-            <Table config={constConfig} datas={dummyCost} />
-          </TableContainer>
+          <SumPieChartCost datas={costRecap} COLORS={costCOLORS} />
+          {costRecap.length ? (
+            <TableContainer>
+              <Table
+                config={costConfig}
+                datas={costRecap[0].costData.costRecap}
+              />
+            </TableContainer>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <p className="m-2 mb-0 text-2xl font-bold">配息狀況</p>
@@ -270,19 +234,30 @@ function SumPage() {
         <div className="flex flex-col justify-center items-center gap-10 md:flex-row md:gap-4">
           <div className="md:order-last">
             <SumPieChartDividend
-              datas={dummyDividend}
-              total={totalIncome}
+              datas={dividendRecap}
               COLORS={dividendCOLORS}
             />
           </div>
-          <TableContainer>
-            <Table config={dividendConfig} datas={dummyDividend} />
-          </TableContainer>
+          {dividendRecap.length ? (
+            <TableContainer>
+              <Table
+                config={dividendConfig}
+                datas={dividendRecap[0].dividnedData.dividendsRecap}
+              />
+            </TableContainer>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <p className="m-2 mb-0 text-2xl font-bold">已實現損益</p>
-      <div className="w-full h-80 md:w-4/5 md:h-96 lg:w-3/5 ">
-        <SumMarginChart datas={dummyMargin} />
+      <div className="w-full h-[500px] md:w-4/5 lg:w-3/5 ">
+        {/* <SumMarginChart datas={marginRecap[0].marginData} /> */}
+        {marginRecap.length ? (
+          <SumMarginChart_copy datas={marginRecap[0].marginData} />
+        ) : (
+          ""
+        )}
       </div>
     </Container>
   );

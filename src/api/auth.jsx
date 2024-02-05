@@ -1,7 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const baseUrl = "";
+const baseUrl =
+  "http://stockproject-dev.ap-northeast-1.elasticbeanstalk.com/api";
 
 export const register = async ({
   username,
@@ -10,7 +11,6 @@ export const register = async ({
   checkPassword,
 }) => {
   try {
-    console.log("testauth");
     console.log(email, password, checkPassword);
     const { data } = await axios.post(`${baseUrl}/register`, {
       username,
@@ -19,7 +19,7 @@ export const register = async ({
       checkPassword,
     });
     console.log(data);
-    return { ...data };
+    return data;
   } catch (err) {
     console.log(`Register Failed ${err}`);
   }
@@ -34,7 +34,6 @@ export const login = async ({ email, password }) => {
     });
     console.log(data);
     if (data.data.authToken) {
-      // localStorage.setItem("authToken", data.data.authToken);
       Cookies.set("token_StockApp", data.data.authToken);
     }
     return data;
