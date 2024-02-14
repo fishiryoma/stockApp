@@ -5,17 +5,18 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { TiPencil } from "react-icons/ti";
 import { editDividendById, deleteDividendById } from "../api/stock";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Pagination from "./Pagination";
+import { useStock } from "../hooks/useStock";
 
 function AddDividend({
-  stockBtn,
   allDividend,
   dividendPage,
   setDividendPage,
   getAllDividend,
 }) {
+  const { stockBtn } = useStock();
+
   useEffect(() => {
     getAllDividend();
   }, [dividendPage]);

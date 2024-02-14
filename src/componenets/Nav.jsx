@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useAuth } from "../hooks/useAuth";
 
 function Nav() {
+  const { isAuthenticated, setIsAuthenticated, userName } = useAuth();
   const links = [
-    { label: "登入", path: "/login" },
-    { label: "註冊新帳號", path: "/register" },
+    { label: "登入", path: "/home" },
     { label: "資產總覽", path: "/sum" },
     { label: "新增交易", path: "/newtransc" },
     {
@@ -25,8 +27,8 @@ function Nav() {
     </li>
   ));
   return (
-    <div className="text-white">
-      <div className="navbar bg-neutral text-neutral-content md:px-3">
+    <div className="text-white ">
+      <div className="navbar bg-neutral text-neutral-content md:px-3 fixed z-50 bg-opacity-90">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -52,7 +54,8 @@ function Nav() {
               {renderedLink}
             </ul>
           </div>
-          <p className="text-xl font-bold">{appName}</p>
+          <img src="logo.webp" alt="logo" className="w-14"></img>
+          <p className="text-xl font-bold hidden sm:block">{appName}</p>
         </div>
         {/* RWD:大視窗的LAYOUT */}
         <div className="navbar-center hidden lg:flex">
@@ -62,33 +65,48 @@ function Nav() {
         <div className="navbar-end">
           {/* 打招呼 */}
           {/* ICON按鈕 */}
-          <p className="mr-3">Hi, 使用者</p>
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-12">
-                <img
-                  className="absolute top-0.5 rounded-full"
-                  src="icon01.jpg"
-                  alt="icon"
-                />
+          {isAuthenticated ? (
+            <>
+              <p className="mr-3 hidden sm:block">
+                Hi, {userName ? userName : "你還沒設定使用者名稱"}
+              </p>
+              <div className="dropdown dropdown-end">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle avatar"
+                >
+                  <div className="w-12">
+                    <img
+                      className="absolute top-0.5 rounded-full"
+                      src='"./icon01.jpg"'
+                      alt="icon"
+                    />
+                  </div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-gray-800"
+                >
+                  <li>
+                    <a>修改個人資料</a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={() => {
+                        Cookies.set("token_StockApp", "");
+                        setIsAuthenticated(false);
+                      }}
+                    >
+                      登出
+                    </a>
+                  </li>
+                </ul>
               </div>
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-gray-800"
-            >
-              <li>
-                <a>修改個人資料</a>
-              </li>
-              <li>
-                <a>登出</a>
-              </li>
-            </ul>
-          </div>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

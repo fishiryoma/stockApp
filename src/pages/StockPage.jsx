@@ -10,8 +10,10 @@ import {
   getDividendByStockId,
   getAbstractByStockId,
 } from "../api/stock";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
-function StockPage({ stock }) {
+function StockPage({ stock = [] }) {
   // 交易
   const [allTransc, setAllTransc] = useState([]);
   const [transcPage, setTranscPage] = useState(1);
@@ -22,11 +24,19 @@ function StockPage({ stock }) {
 
   // 總覽
   const [abstract, setAbstract] = useState([]);
-  const { stockBtn } = useStock();
-  const renderedStock = stock ? stock : stockBtn;
+  const { stockShowing } = useStock();
+  const renderedStock = stock.length ? stock[0] : stockShowing[0];
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   const getAllTransaction = async () => {
-    const res = await getTranscByStockId(stockBtn.id, transcPage);
+    const res = await getTranscByStockId(renderedStock.id, transcPage);
     if (res.success) {
       // 測試用
       // console.log(res.data.transactions);
@@ -36,7 +46,7 @@ function StockPage({ stock }) {
 
   const getAllDividend = async () => {
     try {
-      const res = await getDividendByStockId(stockBtn.id, dividendPage);
+      const res = await getDividendByStockId(renderedStock.id, dividendPage);
       // 測試用
       // console.log(res.data.dividends);
       if (res.success) {
@@ -49,7 +59,7 @@ function StockPage({ stock }) {
 
   const getAbstract = async () => {
     try {
-      const res = await getAbstractByStockId(stockBtn.symbol);
+      const res = await getAbstractByStockId(renderedStock.symbol);
       // 測試用
       // console.log(res);
       if (res.success) {
@@ -64,7 +74,7 @@ function StockPage({ stock }) {
     getAllTransaction();
     getAllDividend();
     getAbstract();
-  }, []);
+  }, [renderedStock]);
 
   return (
     <Container className="bg-gray-800 text-white">

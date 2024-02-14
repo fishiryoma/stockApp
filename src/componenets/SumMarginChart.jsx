@@ -3,97 +3,89 @@ import {
   BarChart,
   Bar,
   Tooltip,
-  Legend,
+  Cell,
   XAxis,
   YAxis,
+  Label,
   CartesianGrid,
+  ReferenceLine,
 } from "recharts";
 
 function SumMarginChart({ datas }) {
-  const rendered = datas.map((data) => {
-    if (data.stockMargin >= 0) {
-      return { ...data, 盈餘: data.stockMargin, pName: data.name };
-    }
-    return { ...data, 虧損: data.stockMargin, nName: data.name };
-  });
+  // 測試用
+  // console.log(datas.marginRecap);
 
-  const maxNumber = (
-    1.3 * Math.max(...datas.map((item) => Math.abs(item.stockMargin)))
-  ).toFixed(0);
-  const absTotal = datas.reduce((acc, cur) => {
-    return Math.abs(cur.stockMargin) + acc;
-  }, 0);
-  const nTotal = datas.reduce((acc, cur) => {
+  const nTotal = datas.marginRecap.reduce((acc, cur) => {
     if (cur.stockMargin < 0) {
       return Math.abs(cur.stockMargin) + acc;
     }
     return acc;
   }, 0);
-  const pTotal = datas.reduce((acc, cur) => {
+  const pTotal = datas.marginRecap.reduce((acc, cur) => {
     if (cur.stockMargin >= 0) {
       return Math.abs(cur.stockMargin) + acc;
     }
     return acc;
   }, 0);
-  // console.log(absTotal, "total");
-  // console.log(nTotal, "ntotal");
-  // console.log(pTotal, "ptotal");
-  // console.log(pTotal / absTotal);
-  // console.log(nTotal / absTotal);
-  // console.log(maxNumber);
 
-  // const CustomTooltip = ({ active, payload, label }) => {
-  //   if (active && payload && payload.length) {
-  //     const value = payload[0].value;
-  //     const textColor = value >= 0 ? "red" : "green";
-  //     return (
-  //       <div
-  //         style={{
-  //           backgroundColor: "rgba(255, 255, 255, 0.93)",
-  //           border: "none",
-  //           color: "black",
-  //           padding: "10px",
-  //           display: "flex",
-  //           flexDirection: "column",
-  //           gap: "3px",
-  //         }}
-  //       >
-  //         <p>{label}</p>
-  //         <div
-  //           style={{
-  //             color: textColor,
-  //           }}
-  //         >
-  //           <p>{`損益: ${value}`}</p>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const value = payload[0].value;
+      const textColor = value >= 0 ? "red" : "green";
+      return (
+        <div
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.93)",
+            border: "none",
+            color: "black",
+            padding: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "3px",
+          }}
+        >
+          <p>{label}</p>
+          <div
+            style={{
+              color: textColor,
+            }}
+          >
+            <p>{`損益: ${value} 元`}</p>
+          </div>
+        </div>
+      );
+    }
 
-  //   return null;
-  // };
+    return null;
+  };
 
   return (
     <ResponsiveContainer height="75%">
-      <div className="text-center text-3xl mb-3">
-        {(pTotal - nTotal).toLocaleString("zh-TW")}元
+      <div className="text-center text-2xl mb-3">
+        {datas.totalMargin.toLocaleString("zh-TW")}元
       </div>
-      <div className="w-3/5 mx-auto flex justify-between">
-        <div>+{pTotal.toLocaleString("zh-TW")}元</div>
+      <div className="w-full mx-auto flex justify-between mb-3">
         <div>-{nTotal.toLocaleString("zh-TW")}元</div>
+        <div>+{pTotal.toLocaleString("zh-TW")}元</div>
       </div>
-      <div className="w-3/5 mx-auto h-8 mb-9 flex border-gray-300 border-2 rounded-3xl">
+      <div className="w-full mx-auto h-8 mb-9 flex rounded-3xl">
         <div
-          className="bg-red-700 rounded-l-3xl"
-          style={{ width: `${(100 * pTotal) / absTotal}%` }}
+          className="bg-green-700 rounded-l-3xl "
+          style={{
+            width: `${(100 * nTotal) / Math.abs(datas.totalMargin)}%`,
+          }}
         ></div>
         <div
-          className="bg-green-700 rounded-r-3xl "
-          style={{ width: `${(100 * nTotal) / absTotal}%` }}
+          className="bg-red-700 rounded-r-3xl"
+          style={{
+            width: `${(100 * pTotal) / Math.abs(datas.totalMargin)}%`,
+          }}
         ></div>
       </div>
       <BarChart
-        data={rendered}
+        width={500}
+        height={300}
+        data={datas.marginRecap}
         margin={{
           top: 5,
           right: 30,
@@ -103,43 +95,36 @@ function SumMarginChart({ datas }) {
         layout="vertical"
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          tick={{ stroke: "#f1f5f9" }}
-          tickMargin={24}
-          height={50}
-          type="number"
-          xAxisId={0}
-          orientation="top"
-          domain={[0, +maxNumber]}
+        <ReferenceLine
+          x={0}
+          stroke="white"
+          strokeDasharray="3 3"
+          isFront={true}
+          strokeWidth={2}
         />
         <XAxis
-          type="number"
           tick={{ stroke: "#f1f5f9" }}
           tickMargin={24}
-          height={50}
-          xAxisId={1}
+          height={70}
+          type="number"
           orientation="bottom"
-          domain={[-maxNumber, 0]}
-        />
+          domain={([dataMin, dataMax]) => {
+            const absMax = 1.2 * Math.max(Math.abs(dataMin), Math.abs(dataMax));
+            return [-absMax, absMax];
+          }}
+          tickFormatter={(value) => value.toLocaleString("zh-TW")}
+        >
+          <Label value="(元)" offset={-15} position="bottom" stroke="#f1f5f9" />
+        </XAxis>
+
         <YAxis
-          tick={{ stroke: "#f1f5f9" }}
-          tickMargin={24}
-          width={80}
+          dataKey="name"
           type="category"
-          dataKey="pName"
-          orientation="left"
-          yAxisId={1}
-        />
-        <YAxis
-          tick={{ stroke: "#f1f5f9" }}
+          tick={{ stroke: "#f1f5f9", fontSize: "14px" }}
           tickMargin={24}
-          width={80}
-          type="category"
-          dataKey="nName"
-          orientation="right"
-          yAxisId={0}
+          width={110}
         />
-        {/* <Tooltip
+        <Tooltip
           contentStyle={{
             backgroundColor: "rgba(255, 255, 255, 0.93)",
             border: "none",
@@ -147,23 +132,16 @@ function SumMarginChart({ datas }) {
           }}
           cursor={{ fill: "rgb(55, 65, 81, 0.80)" }}
           content={<CustomTooltip />}
-        /> */}
+        />
 
-        {/* <Legend verticalAlign="top" /> */}
-        <Bar
-          dataKey="盈餘"
-          fill="#b91c1c"
-          // barSize={20}
-          xAxisId={0}
-          yAxisId={1}
-        />
-        <Bar
-          dataKey="虧損"
-          fill="#15803d"
-          // barSize={20}
-          xAxisId={1}
-          yAxisId={0}
-        />
+        <Bar dataKey="stockMargin" maxBarSize={20}>
+          {datas.marginRecap.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={entry.stockMargin >= 0 ? "#b91c1c" : "#15803d"}
+            />
+          ))}
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );

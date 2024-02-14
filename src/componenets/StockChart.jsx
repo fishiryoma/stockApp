@@ -25,8 +25,6 @@ function StockChart({ allDividend }) {
       {rendered.length ? (
         <ResponsiveContainer>
           <ComposedChart
-            // width={500}
-            // height={400}
             data={rendered}
             margin={{
               top: 20,
@@ -93,7 +91,7 @@ function StockChart({ allDividend }) {
         </ResponsiveContainer>
       ) : (
         <div className="text-2xl h-full flex items-center justify-center">
-          目前沒有資料
+          目前沒有配息資料
         </div>
       )}
     </div>

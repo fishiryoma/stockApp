@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, FormContainer } from "../componenets/Container";
 import Input from "../componenets/Input";
 import Button from "../componenets/Button";
 import { getNameBySymbol, createDividend } from "../api/stock";
 import Swal from "sweetalert2";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function NewDividendPage() {
   // 先驗證輸入股票代碼是否正確
@@ -11,6 +13,14 @@ function NewDividendPage() {
   const [stockId, setStockId] = useState("");
   const [amount, setAmount] = useState("");
   const [dividendDate, setDividendDate] = useState("");
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSymbolCheck = async () => {
     try {
@@ -66,6 +76,12 @@ function NewDividendPage() {
       cleanData();
     } catch (err) {
       console.log(`Create Dividend Failed ${err}`);
+      Swal.fire({
+        title: "新增失敗，請再次確認",
+        icon: "error",
+        timer: 1700,
+        showConfirmButton: false,
+      });
     }
   };
 

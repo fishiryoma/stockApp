@@ -1,25 +1,16 @@
-import { createContext, useState, useEffect } from "react";
-import {
-  getTranscByStockId,
-  getDividendByStockId,
-  getAbstractByStockId,
-} from "../api/stock";
+import { createContext, useState } from "react";
 
 export const StockContext = createContext();
 
 function StockProvider({ children }) {
   // 目前股票ID
-  const [stockBtn, setStockBtn] = useState("");
-
-  const getStockBtn = (data) => {
-    setStockBtn(data);
-  };
+  const [stockShowing, setStockShowing] = useState([]);
 
   return (
     <StockContext.Provider
       value={{
-        stockBtn,
-        getStockBtn,
+        stockShowing,
+        setStockShowing,
       }}
     >
       {children}

@@ -32,9 +32,13 @@ function StockSumTable({ allTransc, allDividend, abstract, getAbstract }) {
             </div>
             <div className="flex justify-between w-full gap-2 border-b-2 border-gray-500 pb-1">
               <p>平均持有成本</p>
-              <p>{`${(abstract[0].totalCost / abstract[0].sharesHold).toFixed(
-                2
-              )}元`}</p>
+              {!abstract[0].sharesHold ? (
+                0
+              ) : (
+                <p>{`${(abstract[0].totalCost / abstract[0].sharesHold).toFixed(
+                  2
+                )}元`}</p>
+              )}
             </div>
             <div className="flex justify-between w-full gap-2 border-b-2 border-gray-500 pb-1">
               <p>累績配息</p>

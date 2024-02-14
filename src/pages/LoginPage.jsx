@@ -1,39 +1,59 @@
 import { Container, FormContainer } from "../componenets/Container";
 import Button from "../componenets/Button";
 import Input from "../componenets/Input";
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login, checkPermission } from "../api/auth";
-import Cookies from "js-cookie";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../api/auth";
 import { useAuth } from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
-function LoginPage() {
+function LoginPage({ setPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const { isAuthenticated } = useAuth();
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate("/sum");
-  //   }
-  // }, []);
+  const { setUserName, setIsAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("testlogin");
     try {
-      const { data } = await login({ email, password });
-      if (data.success) console.log("success");
+      const res = await login({ email, password });
+      console.log(res);
+      if (res.success) {
+        setIsAuthenticated(true);
+        setUserName(res.data.username);
+        Swal.fire({
+          icon: "success",
+          title: "登入成功",
+          timer: 1700,
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          navigate("/sum");
+        }, 1850);
+      }
     } catch (err) {
-      console.log(`Login Failed ${err}`);
+      console.error(err.response.data.message);
+      Swal.fire({
+        icon: "error",
+        title: "登入失敗",
+        text: err.response.data.message,
+        timer: 1700,
+        showConfirmButton: false,
+      });
     }
   };
 
   return (
-    <Container className="bg-white">
-      <FormContainer className="md:w-2/3 lg:w-2/5 xl:w-1/4">
+    <Container>
+      <FormContainer>
         <p className="text-xl text-center font-bold">登入</p>
+        <p className="text-sm text-center my-3 ">
+          還沒有
+          <a className="text-blue-700 font-bold" onClick={() => setPage(false)}>
+            申請帳號
+          </a>
+          帳號嗎？
+        </p>
         <form onSubmit={handleSubmit}>
           <Input
             type="email"
@@ -48,20 +68,17 @@ function LoginPage() {
             type="password"
             label="密碼"
             value={password}
-            placeholder=""
+            placeholder="請輸入4位以上英數字"
+            pattern="^[a-zA-Z0-9]{4,}$"
             labelClassName="text-gray-800"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <div className="flex justify-center gap-x-4 mt-6">
-            <Link to="/register">
-              <Button
-                text="註冊"
-                buttonClass="bg-rose-400 hover:bg-rose-500 py-2"
-              />
-            </Link>
-            <Button text="登入" buttonClass="bg-blue-400 hover:bg-blue-500" />
-          </div>
+
+          <Button
+            text="登入"
+            buttonClass="bg-blue-400 hover:bg-blue-500 w-full py-2"
+          />
         </form>
       </FormContainer>
     </Container>

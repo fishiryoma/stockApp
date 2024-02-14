@@ -1,8 +1,25 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const baseUrl =
-  "http://stockproject-dev.ap-northeast-1.elasticbeanstalk.com/api";
+const baseUrl = import.meta.env.VITE_APP_API_URL;
+
+const stockAPI = axios.create({
+  baseURL: baseUrl,
+  timeout: 3500,
+});
+stockAPI.interceptors.request.use(
+  (config) => {
+    // get Token
+    const token = Cookies.get("token_StockApp");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (err) => {
+    console.error(err);
+  }
+);
 
 export const register = async ({
   username,
@@ -12,23 +29,23 @@ export const register = async ({
 }) => {
   try {
     console.log(email, password, checkPassword);
-    const { data } = await axios.post(`${baseUrl}/register`, {
+    const { data } = await stockAPI.post("/api/register", {
       username,
       email,
       password,
       checkPassword,
     });
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (err) {
-    console.log(`Register Failed ${err}`);
+    console.error(`Register Failed ${err}`);
+    throw err;
   }
 };
 
 export const login = async ({ email, password }) => {
   try {
-    console.log("loginauth");
-    const { data } = await axios.post(`${baseUrl}/login`, {
+    const { data } = await stockAPI.post("/api/login", {
       email,
       password,
     });
@@ -38,22 +55,17 @@ export const login = async ({ email, password }) => {
     }
     return data;
   } catch (err) {
-    console.log(`Login Failed ${err}`);
+    console.error(`Login Failed ${err}`);
+    throw err;
   }
 };
 
-export const checkPermission = async (authToken) => {
+export const checkPermission = async () => {
   try {
-    // console.log(authToken);
-    const res = await axios.get(`${baseUrl}/test-token`, {
-      headers: {
-        Authorization: "Bearer " + authToken,
-      },
-    });
-
+    const res = await stockAPI.get("/api/test-token");
     // console.log(res);
     return res.data.success;
   } catch (err) {
-    console.log(`Check Permission Failed ${err}`);
+    console.error(`Check Permission Failed ${err}`);
   }
 };

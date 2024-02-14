@@ -1,33 +1,38 @@
 import { createContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { checkPermission } from "../api/auth";
 
 export const AuthContext = createContext();
 
-function AuthProvider() {
+function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { pathname } = useLocation();
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkValid = async () => {
       const authToken = Cookies.get("token_StockApp");
       if (!authToken) {
         setIsAuthenticated(false);
+
         return;
       }
-      // 還沒確定DATA是否被包在data裡面
-      const data = await checkPermission(authToken);
-      if (data.success) {
+      const res = await checkPermission();
+      if (res) {
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
       }
     };
     checkValid();
-  }, [pathname]);
+  }, [isAuthenticated, navigate]);
   return (
-    <AuthContext.Provider value={{ isAuthenticated }}></AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ isAuthenticated, setIsAuthenticated, userName, setUserName }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 

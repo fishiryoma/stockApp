@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 
 function FormContainer({ children, className }) {
   const classes = twMerge(
-    "container w-full md:w-1/3 lg:w-1/4 bg-slate-50 mx-auto py-6 px-6 rounded-md shadow-md",
+    "container w-full max-w-md bg-slate-50 mx-auto py-6 px-6 rounded-md shadow-md bg-opacity-95",
     className
   );
   return <div className={classes}>{children}</div>;
@@ -14,7 +14,7 @@ function TableContainer({ children, tableClass }) {
 }
 
 function Container({ children, className }) {
-  const classes = twMerge("py-10 px-3 md:px-6 flex-grow", className);
+  const classes = twMerge("py-10 px-4 md:px-6 flex-grow mt-[68px] ", className);
 
   return <div className={classes}>{children}</div>;
 }

@@ -42,9 +42,9 @@ function SumPieChartCost({ datas, COLORS }) {
                 <Cell
                   key={`cell-${index}`}
                   fill={
-                    entry.sharesHold >= 1000 && index < COLORS.length
-                      ? COLORS[index]
-                      : "black"
+                    entry.costPercentage <= 0.05 && index >= COLORS.length
+                      ? "black"
+                      : COLORS[index]
                   }
                 />
               ))}

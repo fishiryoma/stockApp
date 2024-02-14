@@ -1,10 +1,11 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const baseUrl = "http://stockproject-dev.ap-northeast-1.elasticbeanstalk.com";
+const baseUrl = import.meta.env.VITE_APP_API_URL;
 
 const stockAPI = axios.create({
   baseURL: baseUrl,
+  timeout: 3500,
 });
 stockAPI.interceptors.request.use(
   (config) => {
@@ -78,15 +79,16 @@ export const createTransc = async ({
   note,
   isBuy,
 }) => {
-  console.log({
-    stockId,
-    pricePerUnit,
-    quantity,
-    transDate,
-    fee,
-    note,
-    isBuy,
-  });
+  // 測試用
+  // console.log({
+  //   stockId,
+  //   pricePerUnit,
+  //   quantity,
+  //   transDate,
+  //   fee,
+  //   note,
+  //   isBuy,
+  // });
   try {
     const { data } = await stockAPI.post(`/api/transactions`, {
       stockId,

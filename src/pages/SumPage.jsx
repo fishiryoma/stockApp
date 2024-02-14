@@ -1,12 +1,12 @@
 import Table from "../componenets/Table";
 import Button from "../componenets/Button";
 import { TableContainer, Container } from "../componenets/Container";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SumPieChartCost from "../componenets/SumPieChartCost";
 import SumPieChartDividend from "../componenets/SumPieChartDividend";
 import SumLineChart from "../componenets/SumLineChart";
-// import SumMarginChart from "../componenets/SumMarginChart";
-import SumMarginChart_copy from "../componenets/SumMarginChart_copy";
+import SumMarginChart from "../componenets/SumMarginChart";
+
 import {
   getRecapCost,
   getRecapDividend,
@@ -15,59 +15,16 @@ import {
 } from "../api/stock";
 import { useState, useEffect } from "react";
 import { useStock } from "../hooks/useStock";
-
-const dummyMargin = [
-  {
-    id: 5,
-    symbol: "2330",
-    name: "台積電",
-    stockMargin: 8450,
-  },
-  {
-    id: 6,
-    symbol: "006208",
-    name: "富邦台50",
-    stockMargin: 4560,
-  },
-  {
-    id: 1,
-    symbol: "00878",
-    name: "國泰永續高股息",
-    stockMargin: 1900,
-  },
-  {
-    id: 2,
-    symbol: "00878",
-    name: "國泰永續高股息",
-    stockMargin: -900,
-  },
-  {
-    id: 10,
-    symbol: "0056",
-    name: "富邦??",
-    stockMargin: -4200,
-  },
-  {
-    id: 12,
-    symbol: "1234",
-    name: "國泰永續高股息",
-    stockMargin: -4540,
-  },
-  {
-    id: 13,
-    symbol: "008",
-    name: "國泰永續高股息",
-    stockMargin: -9100,
-  },
-];
+import { useAuth } from "../hooks/useAuth";
 
 function SumPage() {
   const [diagramRecap, setDiagramRecap] = useState([]);
   const [costRecap, setCostRecap] = useState([]);
   const [dividendRecap, setDividendReCap] = useState([]);
   const [marginRecap, setMarginRecap] = useState([]);
-
-  const { getStockBtn } = useStock();
+  const { isAuthenticated } = useAuth();
+  const { setStockShowing } = useStock();
+  const navigate = useNavigate();
 
   //  處理數據成表格能用的格式
   const getDiagramData = (variable) => {
@@ -81,6 +38,12 @@ function SumPage() {
     }
     return result;
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const getRecapData = async () => {
@@ -172,7 +135,7 @@ function SumPage() {
             text="詳細"
             buttonClass="bg-gray-500 hover:bg-gray-300 hover:text-gray-800 text-sm"
             onClick={() => {
-              getStockBtn(data);
+              setStockShowing([data]);
             }}
           />
         </Link>
@@ -204,7 +167,7 @@ function SumPage() {
   ];
   // console.log(marginRecap[0].marginData, "aaa");
   return (
-    <Container className="flex flex-col items-center gap-12 px-1 bg-gray-800 text-white h-100">
+    <Container className="flex flex-col items-center gap-12 bg-gray-800 text-white h-100">
       <p className="m-2 text-2xl font-bold">資產趨勢</p>
       <div className="w-full h-80 md:w-4/5 md:h-96 lg:w-3/5 mb-10">
         <SumLineChart
@@ -215,7 +178,7 @@ function SumPage() {
       <p className="m-2 mb-0 text-2xl font-bold">證劵組成</p>
 
       <div className="w-full">
-        <div className="flex flex-col justify-center items-center gap-10 md:flex-row md:gap-4">
+        <div className="flex flex-col justify-center items-center gap-10 md:flex-row md:gap-4 max-w-7xl mx-auto">
           <SumPieChartCost datas={costRecap} COLORS={costCOLORS} />
           {costRecap.length ? (
             <TableContainer>
@@ -231,7 +194,7 @@ function SumPage() {
       </div>
       <p className="m-2 mb-0 text-2xl font-bold">配息狀況</p>
       <div className="w-full">
-        <div className="flex flex-col justify-center items-center gap-10 md:flex-row md:gap-4">
+        <div className="flex flex-col justify-center items-center gap-10 md:flex-row md:gap-4 max-w-7xl mx-auto">
           <div className="md:order-last">
             <SumPieChartDividend
               datas={dividendRecap}
@@ -252,9 +215,8 @@ function SumPage() {
       </div>
       <p className="m-2 mb-0 text-2xl font-bold">已實現損益</p>
       <div className="w-full h-[500px] md:w-4/5 lg:w-3/5 ">
-        {/* <SumMarginChart datas={marginRecap[0].marginData} /> */}
         {marginRecap.length ? (
-          <SumMarginChart_copy datas={marginRecap[0].marginData} />
+          <SumMarginChart datas={marginRecap[0].marginData} />
         ) : (
           ""
         )}

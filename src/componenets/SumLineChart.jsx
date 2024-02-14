@@ -69,7 +69,7 @@ function SumLineChart({ datas, handleDiagramChange }) {
         />
         <YAxis
           label={{
-            value: "萬元(NTD)",
+            value: "萬元",
             angle: -90,
             position: "insideLeft",
             // offset: -5,

@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.myPage {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.01),
+      rgba(163, 163, 163, 0.5)
+    ),
+    url("https://stockapp2024.netlify.app/ai01.jpg");
+  background-size: cover;
+}
+
 /* reset css */
 
 body {
@@ -38,6 +48,7 @@ li {
 a,
 a:hover,
 a:focus {
+  cursor: pointer;
   text-decoration: none;
 }
 

@@ -1,11 +1,13 @@
 import classNames from "classnames";
 import { twMerge } from "tailwind-merge";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../componenets/Input";
 import Button from "../componenets/Button";
 import { Container } from "../componenets/Container";
 import { getNameBySymbol, createTransc } from "../api/stock";
 import Swal from "sweetalert2";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function NewTransctionPage() {
   // 先驗證輸入股票代碼是否正確
@@ -19,6 +21,14 @@ function NewTransctionPage() {
   const [transDate, setTransDate] = useState("");
   const [fee, setFee] = useState("");
   const [note, setNote] = useState("");
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   // Style
   const wrapclass = "my-1";
@@ -83,7 +93,7 @@ function NewTransctionPage() {
         note,
         isBuy,
       });
-      console.log(res);
+      // console.log(res);
       if (res.success && isBuy) {
         Toast.fire({
           icon: "success",
@@ -109,7 +119,13 @@ function NewTransctionPage() {
       };
       cleanData();
     } catch (err) {
-      console.log(`Create Transaction Failed ${err}`);
+      console.error(`Create Transaction Failed ${err}`);
+      Swal.fire({
+        icon: "error",
+        title: "交易失敗，請再次確認庫存",
+        timer: 1700,
+        showConfirmButton: false,
+      });
     }
   };
   const handleSymbolCheck = async () => {
@@ -117,7 +133,8 @@ function NewTransctionPage() {
       const res = await getNameBySymbol(stockId);
       if (res.success) {
         setStock(res.data.stock);
-        console.log(res.data.stock);
+        // 測試用
+        // console.log(res.data.stock);
       }
     } catch (err) {
       Swal.fire({
