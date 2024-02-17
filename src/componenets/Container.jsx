@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 
 function FormContainer({ children, className }) {
   const classes = twMerge(
-    "container w-full max-w-md bg-slate-50 mx-auto py-6 px-6 rounded-md shadow-md bg-opacity-95",
+    "container w-full max-w-md bg-slate-50 mx-auto py-6 px-6 rounded-md shadow-md bg-opacity-95 text-black",
     className
   );
   return <div className={classes}>{children}</div>;

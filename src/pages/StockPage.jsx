@@ -78,7 +78,7 @@ function StockPage({ stock = [] }) {
 
   return (
     <Container className="bg-gray-800 text-white">
-      <p className="text-3xl mb-8 2xl:ml-10">{`${renderedStock.symbol} ${renderedStock.name}`}</p>
+      <p className="text-xl sm:text-3xl mb-8 2xl:ml-10">{`${renderedStock.symbol} ${renderedStock.name}`}</p>
       <div className="flex flex-col gap-y-10 lg:grid lg:grid-rows-2 lg:grid-cols-[65fr_35fr] lg:gap-y-4 lg:items-center xl:gap-x-5 2xl:gap-x-10">
         {/* 總整 */}
         <div className="lg:col-start-2 lg:row-start-1 w-full ">

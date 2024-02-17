@@ -12,8 +12,6 @@ function RegisterPage({ setPage }) {
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const navigate = useNavigate();
-  console.log("test");
-  console.log("test");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

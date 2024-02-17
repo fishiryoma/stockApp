@@ -9,7 +9,7 @@ function StockSumTable({ allTransc, allDividend, abstract, getAbstract }) {
   return (
     <div className=" flex flex-col items-center sm:flex-row sm:text-xl sm:flex sm:justify-center sm:gap-y-8 ">
       {abstract.length ? (
-        <div>
+        <div className="bg-white py-5 px-0 text-black rounded-md">
           <div>
             <div className="flex justify-center items-center gap-3 rounded-md bg-gray-200 text-gray-800 px-5 py-4 mx-4 text-base">
               <p className="">損益試算</p>
@@ -25,7 +25,7 @@ function StockSumTable({ allTransc, allDividend, abstract, getAbstract }) {
             </div>
             {/* <StockSumPieChart datas={abstract[0]} /> */}
           </div>
-          <div className="ml-2 flex flex-col items-start gap-3 px-5 py-4 xl:px-10 text-base">
+          <div className="flex flex-col items-start gap-3 px-5 py-4 xl:px-10 text-base">
             <div className="flex justify-between w-full gap-2 border-b-2 border-gray-500 pb-1">
               <p>總成本</p>
               <p>{`${abstract[0].totalCost.toLocaleString("zh-TW")}元`}</p>

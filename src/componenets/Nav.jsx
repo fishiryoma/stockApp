@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useAuth } from "../hooks/useAuth";
 
 function Nav() {
-  const { isAuthenticated, setIsAuthenticated, userName } = useAuth();
+  const { isAuthenticated, setIsAuthenticated, user } = useAuth();
   const links = [
     { label: "登入", path: "/home" },
     { label: "資產總覽", path: "/sum" },
@@ -20,12 +20,13 @@ function Nav() {
   const appName = "股利計算器";
   const renderedLink = links.map((link) => (
     <li
-      className="active:text-white text-md font-bold hover:bg-gray-400 hover:text-white rounded-lg transition"
+      className="text-md font-bold hover:bg-gray-400 hover:text-white rounded-lg transition"
       key={link.label}
     >
       <Link to={link.path}>{link.label}</Link>
     </li>
   ));
+  console.log(user, `icon0${user.icon}.jpg`);
   return (
     <div className="text-white ">
       <div className="navbar bg-neutral text-neutral-content md:px-3 fixed z-50 bg-opacity-90">
@@ -49,7 +50,7 @@ function Nav() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 text-gray-800 rounded-box w-52"
+              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-white text-gray-800 rounded-box w-52"
             >
               {renderedLink}
             </ul>
@@ -68,7 +69,7 @@ function Nav() {
           {isAuthenticated ? (
             <>
               <p className="mr-3 hidden sm:block">
-                Hi, {userName ? userName : "你還沒設定使用者名稱"}
+                Hi, {user.name ? user.name : "你還沒設定使用者名稱"}
               </p>
               <div className="dropdown dropdown-end">
                 <div
@@ -79,7 +80,7 @@ function Nav() {
                   <div className="w-12">
                     <img
                       className="absolute top-0.5 rounded-full"
-                      src='"./icon01.jpg"'
+                      src={`icon0${user.icon}.jpg`}
                       alt="icon"
                     />
                   </div>
@@ -88,9 +89,11 @@ function Nav() {
                   tabIndex={0}
                   className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-gray-800"
                 >
-                  <li>
-                    <a>修改個人資料</a>
-                  </li>
+                  <Link to="/user">
+                    <li>
+                      <div>修改個人資料</div>
+                    </li>
+                  </Link>
                   <li>
                     <a
                       onClick={() => {

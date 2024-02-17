@@ -9,6 +9,7 @@ import { Routes, Route } from "react-router-dom";
 import { useStock } from "./hooks/useStock";
 import MyPage from "./pages/MyPage";
 import CallbackPage from "./pages/CallbackPage";
+import UserPage from "./pages/UserPage";
 
 function App() {
   const { stockShowing } = useStock();
@@ -31,6 +32,7 @@ function App() {
           <Route path="/newdividend" element={<NewDividendPage />} />
           <Route path="/stock" element={<SearchPage />} />
           <Route path="/callback" element={<CallbackPage />} />
+          <Route path="/user" element={<UserPage />} />
         </Routes>
       </div>
       <Footer />

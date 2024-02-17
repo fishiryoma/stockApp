@@ -49,7 +49,7 @@ export const login = async ({ email, password }) => {
       email,
       password,
     });
-    console.log(data);
+    // console.log(data);
     if (data.data.authToken) {
       Cookies.set("token_StockApp", data.data.authToken);
     }
