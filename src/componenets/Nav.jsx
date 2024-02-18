@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
 
 function Nav() {
+  const [modalShow, setModalShow] = useState(true);
   const { isAuthenticated, setIsAuthenticated, user } = useAuth();
   const links = [
     { label: "登入", path: "/home" },
@@ -17,16 +19,16 @@ function Nav() {
       path: "/stock",
     },
   ];
-  const appName = "股利計算器";
+  const appName = "投資存股";
   const renderedLink = links.map((link) => (
     <li
-      className="text-md font-bold hover:bg-gray-400 hover:text-white rounded-lg transition"
+      className="text-md font-bold hover:bg-gray-400 hover:text-white active:text-white rounded-lg transition"
       key={link.label}
     >
       <Link to={link.path}>{link.label}</Link>
     </li>
   ));
-  console.log(user, `icon0${user.icon}.jpg`);
+
   return (
     <div className="text-white ">
       <div className="navbar bg-neutral text-neutral-content md:px-3 fixed z-50 bg-opacity-90">
@@ -50,7 +52,7 @@ function Nav() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-white text-gray-800 rounded-box w-52"
+              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-gray-100 text-gray-800 rounded-box w-52"
             >
               {renderedLink}
             </ul>
@@ -59,8 +61,82 @@ function Nav() {
           <p className="text-xl font-bold hidden sm:block">{appName}</p>
         </div>
         {/* RWD:大視窗的LAYOUT */}
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{renderedLink}</ul>
+        <div className="navbar-center hidden sm:flex">
+          <div className="flex gap-4">
+            <div onClick={() => setModalShow(true)}>
+              <label htmlFor="modal_addnew">
+                <img
+                  src="new.svg"
+                  alt="new button"
+                  className="w-10 h-10 min-w-0 min-h-0 bg-white rounded-full p-1 btn hover:bg-cyan-600 hover:border-0"
+                />
+              </label>
+            </div>
+            <Link to="/sum">
+              <img
+                src="my_data.svg"
+                alt="my data button"
+                className="w-10 h-10 min-w-0 min-h-0 bg-white rounded-full p-1 btn "
+              />
+            </Link>
+            <Link to="/stock">
+              <img
+                src="search.svg"
+                alt="search button"
+                className="w-10 h-10 min-w-0 min-h-0  bg-white rounded-full p-1 btn "
+              />
+            </Link>
+          </div>
+
+          {/* modal */}
+          {modalShow ? (
+            <div>
+              <input
+                type="checkbox"
+                id="modal_addnew"
+                className="modal-toggle "
+              />
+              <div className="modal" role="dialog">
+                <div className="modal-box bg-transparent flex justify-center gap-8 w-96 ">
+                  <div
+                    className="btn h-full w-5/12 p-6 flex flex-col gap-3 bg-gray-100 text-gray-800 items-center rounded-xl"
+                    onClick={() => {
+                      setModalShow(false);
+                    }}
+                  >
+                    <Link to="/newtransc">
+                      <p className="text-xl">新增交易</p>
+                      <img
+                        src="transaction.svg"
+                        alt="new transaction btn"
+                        className="h-18 "
+                      />
+                    </Link>
+                  </div>
+                  <div
+                    className="btn h-full w-5/12 p-6 flex flex-col gap-3 bg-gray-100 text-gray-800 items-center rounded-xl"
+                    onClick={() => {
+                      setModalShow(false);
+                    }}
+                  >
+                    <Link to="/newdividend">
+                      <p className="text-xl">新增股利</p>
+                      <img
+                        src="dividend.svg"
+                        alt="new transaction btn"
+                        className="h-18"
+                      />
+                    </Link>
+                  </div>
+                </div>
+                <label className="modal-backdrop" htmlFor="modal_addnew">
+                  Close
+                </label>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         {/* Nav右端布局 */}
         <div className="navbar-end">
@@ -69,7 +145,7 @@ function Nav() {
           {isAuthenticated ? (
             <>
               <p className="mr-3 hidden sm:block">
-                Hi, {user.name ? user.name : "你還沒設定使用者名稱"}
+                Hi, {user.name ? user.name : ""}
               </p>
               <div className="dropdown dropdown-end">
                 <div

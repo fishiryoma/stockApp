@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 function LoginPage({ setPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser, setIsAuthenticated } = useAuth();
+  const { user, setUser, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,7 +20,7 @@ function LoginPage({ setPage }) {
       // console.log(res);
       if (res.success) {
         setIsAuthenticated(true);
-        setUser({ name: res.data.username, icon: 1 });
+        setUser({ ...user, name: res.data.username, icon: 1 });
         Swal.fire({
           icon: "success",
           title: "登入成功",
