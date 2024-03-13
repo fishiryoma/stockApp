@@ -18,14 +18,18 @@
 
 ## 目次
 
-- [功能介紹](##功能介紹)
-  - [DaisyUI, TailwindCss, Recharts 三方搭配構成畫面](###DaisyUI,-TailwindCss,-Recharts-三方搭配構成畫面)
-  - [React-route-dom](###React-route-dom)
-  - [Axios](###Axios)
-  - [React](###React)
-  - [其他輔助 Library](###其他輔助-Library)
-- [學習過程](##學習過程) -[專案初期](###專案初期) -[專案中期](###專案中期) -[專案後期](###專案後期)
-
+- [功能介紹](#功能介紹)
+  * [DaisyUI, TailwindCss, Recharts 三方搭配構成畫面](#功能介紹)
+  * [React-route-dom](#react-route-dom)
+  * [Axios](#axios)
+  * [React](#react)
+  * [其他輔助 Library](#其他輔助-library)
+- [學習過程](#學習過程)
+  * [專案初期](#專案初期)
+  * [專案中期](#專案中期)
+  * [專案後期](#專案後期)
+  * [心得](#心得)
+  
 ## 功能介紹
 
 ### DaisyUI, TailwindCss, Recharts 三方搭配構成畫面
