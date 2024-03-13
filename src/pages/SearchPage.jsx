@@ -1,47 +1,35 @@
 import StockPage from "./StockPage";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container } from "../componenets/Container";
 import { getAbstractByStockId, getNameBySymbol } from "../api/stock";
-import Swal from "sweetalert2";
-import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { popupMsg } from "../componenets/Helper";
+import { useStock } from "../hooks/useStock";
 
-function SearchPage() {
+export default function SearchPage() {
   const [keyword, setKeyword] = useState("");
-  const [stockInfo, setStockInfo] = useState([]);
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const [stockInfo, setStockInfo] = useState(null);
+  const { setStockShowing } = useStock();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, navigate]);
-
-  const handleClick = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await getAbstractByStockId(keyword);
       if (res.success) {
         const res = await getNameBySymbol(keyword);
-        setStockInfo([res.data.stock]);
+        setStockInfo(res.data.stock);
+        setStockShowing(res.data.stock);
         setKeyword("");
       }
     } catch (err) {
-      console.log(`Can't find Stock ${err}`);
-      Swal.fire({
-        title: "找不到這隻股票",
-        icon: "error",
-        timer: 1700,
-        showConfirmButton: false,
-      });
+      popupMsg("找不到這隻股票");
+      console.error(err);
     }
   };
 
   return (
     <Container className="bg-gray-800">
-      <div className="flex justify-center">
-        <form>
+      <div className="flex flex-col justify-center items-center">
+        <form onSubmit={handleSubmit}>
           <input
             type="number"
             placeholder="輸入個股代碼"
@@ -49,18 +37,12 @@ function SearchPage() {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <button
-            className="btn btn-ghost text-white bg-gray-500 hover:bg-gray-600 text-lg ml-2"
-            onClick={handleClick}
-          >
+          <button className="btn btn-ghost text-white bg-gray-500 hover:bg-gray-600 text-lg ml-2">
             搜尋
           </button>
         </form>
+        {stockInfo && <StockPage stock={stockInfo} />}
       </div>
-
-      {stockInfo.length ? <StockPage stock={stockInfo} /> : ""}
     </Container>
   );
 }
-
-export default SearchPage;

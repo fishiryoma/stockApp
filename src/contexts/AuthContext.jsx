@@ -5,7 +5,7 @@ import { checkPermission } from "../api/auth";
 
 export const AuthContext = createContext();
 
-function AuthProvider({ children }) {
+export default function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({ name: "user", icon: 1 });
   const navigate = useNavigate();
@@ -15,7 +15,6 @@ function AuthProvider({ children }) {
       const authToken = Cookies.get("token_StockApp");
       if (!authToken) {
         setIsAuthenticated(false);
-
         return;
       }
       const res = await checkPermission();
@@ -27,6 +26,7 @@ function AuthProvider({ children }) {
     };
     checkValid();
   }, [isAuthenticated, navigate]);
+
   return (
     <AuthContext.Provider
       value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
@@ -35,5 +35,3 @@ function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-
-export default AuthProvider;

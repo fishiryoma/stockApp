@@ -1,29 +1,29 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-import LoginPage from "./LoginPage";
-import RegisterPage from "./RegisterPage";
+import { useNavigate, Outlet } from "react-router-dom";
+import Footer from "../componenets/Footer";
+import Nav from "../componenets/Nav";
+import StockProvider from "../contexts/StockContext";
 
-const MyPage = () => {
-  const [page, setPage] = useState(true);
+export default function MyPage() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/sum");
+    if (!isAuthenticated) {
+      navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="myPage flex-grow ">
-      {page ? (
-        <LoginPage setPage={setPage} />
-      ) : (
-        <RegisterPage setPage={setPage} />
-      )}
+    <div className="flex flex-col h-screen scrollbar">
+      <Nav />
+      <div className="flex-grow flex flex-col">
+        <StockProvider>
+          <Outlet />
+        </StockProvider>
+      </div>
+      <Footer />
     </div>
   );
-};
-
-export default MyPage;
+}

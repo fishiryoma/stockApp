@@ -38,8 +38,7 @@ export const register = async ({
     // console.log(data);
     return data;
   } catch (err) {
-    console.error(`Register Failed ${err}`);
-    throw err;
+    throw new Error(`註冊失敗${err.message}`);
   }
 };
 
@@ -55,8 +54,7 @@ export const login = async ({ email, password }) => {
     }
     return data;
   } catch (err) {
-    console.error(`Login Failed ${err}`);
-    throw err;
+    throw new Error(`登入失敗${err.message}`);
   }
 };
 
@@ -66,6 +64,6 @@ export const checkPermission = async () => {
     // console.log(res);
     return res.data.success;
   } catch (err) {
-    console.error(`Check Permission Failed ${err}`);
+    throw new Error(`認證Permission失敗${err.message}`);
   }
 };

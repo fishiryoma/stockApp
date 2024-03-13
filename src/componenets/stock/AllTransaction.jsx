@@ -1,39 +1,30 @@
-import { TableContainer } from "./Container";
-import Table from "./Table";
-import Button from "./Button";
+import { TableContainer } from "../Container";
+import Table from "../Table";
+import Button from "../Button";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { deleteTranscById } from "../api/stock";
-import Swal from "sweetalert2";
-import Pagination from "./Pagination";
-import { useEffect } from "react";
+import { deleteTranscById } from "../../api/stock";
+import Pagination from "../Pagination";
+import { popupMsg, ensurePopup } from "../Helper";
 
-function AllTransaction({
-  getAllTransaction,
+export default function AllTransaction({
   allTransc,
   transcPage,
   setTranscPage,
+  updateAllDate,
 }) {
-  useEffect(() => {
-    getAllTransaction();
-  }, [transcPage]);
-
   const handleTranscDelete = async (id) => {
     try {
-      const result = await Swal.fire({
-        title: "確定要刪除這筆交易嗎?",
-        showCancelButton: true,
-        confirmButtonText: "確定",
-        cancelButtonText: "取消",
-      });
+      const result = await ensurePopup("確定要刪除這筆交易嗎");
       if (result.isConfirmed) {
-        await Swal.fire("已刪除交易", "", "success");
+        popupMsg("已刪除交易", "", "success");
         const res = await deleteTranscById(id);
         if (res) {
-          getAllTransaction();
+          await updateAllDate();
         }
       }
     } catch (err) {
-      console.log(`Delete Transaction Failed ${err}`);
+      console.error(err);
+      throw new Error(err);
     }
   };
 
@@ -84,7 +75,7 @@ function AllTransaction({
   ];
 
   return (
-    <TableContainer tableClass="lg:w-full border-2 p-3 rounded-lg">
+    <TableContainer tableClass="border-2 p-3 rounded-lg lg:w-[460px]">
       <p className="text-2xl font-bold mb-4">交易紀錄</p>
       {allTransc.length ? (
         <Table config={config} datas={allTransc} />
@@ -95,5 +86,3 @@ function AllTransaction({
     </TableContainer>
   );
 }
-
-export default AllTransaction;

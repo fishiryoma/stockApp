@@ -1,63 +1,62 @@
 import { Container } from "../componenets/Container";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 
-function UserPage() {
+export default function UserPage() {
   const [imgId, setImgId] = useState(1);
-  const { setUser, isAuthenticated, user } = useAuth();
-  const navigate = useNavigate();
+  const { setUser, user } = useAuth();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, navigate]);
   return (
     <Container>
-      <div className="text-center">
-        <div className="carousel rounded-box">
-          <div className="carousel-item w-full relative ">
-            <img
-              src={`icon0${imgId}.jpg`}
-              className="w-60"
-              alt="Tailwind CSS Carousel component"
-            />
-            <div className="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2">
-              <div
-                className="btn btn-circle btn-xs bg-white/50"
-                onClick={() => {
-                  setImgId(imgId === 1 ? 4 : imgId - 1);
-                }}
-              >
-                ❮
-              </div>
-              <div
-                className="btn btn-circle btn-xs bg-white/50"
-                onClick={() => {
-                  setImgId(imgId === 4 ? 1 : imgId + 1);
-                }}
-              >
-                ❯
-              </div>
-            </div>
+      <div>
+        <IconCarousel imgId={imgId} setImgId={setImgId} />
+        <div className="text-center">
+          <div
+            className="btn sm:btn-lg mt-8 text-xl"
+            onClick={() => {
+              setUser({ ...user, icon: imgId });
+            }}
+          >
+            設定
           </div>
-        </div>
-      </div>
-      <div className="text-center">
-        <div
-          className="btn btn-sm mt-3"
-          onClick={() => {
-            setUser({ ...user, icon: imgId });
-            console.log("test");
-            console.log(user, imgId);
-          }}
-        >
-          設定
         </div>
       </div>
     </Container>
   );
 }
 
-export default UserPage;
+function IconCarousel({ imgId, setImgId }) {
+  const btnClass = "btn btn-circle sm:btn-lg bg-white/50";
+
+  return (
+    <div className="text-center">
+      <div className="carousel rounded-box">
+        <div className="carousel-item w-full relative ">
+          <img
+            src={`../../public/icon0${imgId}.jpg`}
+            className="w-full max-w-5xl"
+            alt="Tailwind CSS Carousel component"
+          />
+          <div className="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2">
+            <div
+              className={btnClass}
+              onClick={() => {
+                setImgId(imgId === 1 ? 4 : imgId - 1);
+              }}
+            >
+              ❮
+            </div>
+            <div
+              className={btnClass}
+              onClick={() => {
+                setImgId(imgId === 4 ? 1 : imgId + 1);
+              }}
+            >
+              ❯
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -35,7 +35,7 @@ function SumLineChart({ datas, handleDiagramChange }) {
   };
   return (
     <ResponsiveContainer>
-      <div className="mx-8 mb-5 ml-auto w-2/5 md:w-2/5 lg:w-2/6">
+      <div className="mx-8 mb-10 ml-auto w-full max-w-xs ">
         <select
           className="select select-sm w-full bg-gray-600"
           onChange={(e) => {
@@ -62,7 +62,7 @@ function SumLineChart({ datas, handleDiagramChange }) {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="time"
-          tick={{ fontSize: 14, stroke: "#f1f5f9" }}
+          tick={{ fontSize: 12, stroke: "#f1f5f9" }}
           tickMargin={24}
           angle={-30}
           height={60}

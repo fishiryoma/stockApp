@@ -30,7 +30,7 @@ export const getNameBySymbol = async (symbol) => {
     // console.log(data);
     return data;
   } catch (err) {
-    console.log(`Get Stock Name Failed ${err}`);
+    throw new Error(`抓取股票代碼失敗${err}`);
   }
 };
 
@@ -43,7 +43,7 @@ export const getAbstractByStockId = async (stockId) => {
     // data.success判斷庫存是否有這支股票
     return data;
   } catch (err) {
-    console.log(`Get Stock Info Failed ${err}`);
+    throw new Error(`獲取股票資料失敗${err}`);
   }
 };
 
@@ -55,7 +55,7 @@ export const getTranscByStockId = async (id, page = 1) => {
     );
     return data;
   } catch (err) {
-    console.log(`Get RecapTransaction Failed ${err}`);
+    throw new Error(`抓取交易紀錄失敗${err}`);
   }
 };
 export const getDividendByStockId = async (id, page = 1) => {
@@ -65,7 +65,7 @@ export const getDividendByStockId = async (id, page = 1) => {
     );
     return data;
   } catch (err) {
-    console.log(`Get Recap Dividend Failed ${err}`);
+    throw new Error(`抓取股利紀錄失敗${err}`);
   }
 };
 
@@ -101,7 +101,7 @@ export const createTransc = async ({
     });
     return data;
   } catch (err) {
-    console.log(`Create Transaction Failed ${err}`);
+    throw new Error(`新增交易紀錄失敗${err}`);
   }
 };
 
@@ -112,7 +112,7 @@ export const getTranscById = async (id) => {
     });
     return data;
   } catch (err) {
-    console.log(`Get Transaction Failed ${err}`);
+    throw new Error(`抓取單筆交易紀錄失敗${err}`);
   }
 };
 
@@ -123,7 +123,7 @@ export const deleteTranscById = async (id) => {
     });
     return data.success;
   } catch (err) {
-    console.log(`Delete Transaction Failed ${err}`);
+    throw new Error(`刪除單筆交易紀錄失敗${err}`);
   }
 };
 
@@ -137,7 +137,7 @@ export const createDividend = async ({ dividendDate, amount, stockId }) => {
     });
     return data;
   } catch (err) {
-    console.log(`Create Dividend Failed ${err}`);
+    throw new Error(`新增股利紀錄失敗${err}`);
   }
 };
 
@@ -148,7 +148,7 @@ export const getDividendById = async (id) => {
     });
     return data;
   } catch (err) {
-    console.log(`Get Dividend Failed ${err}`);
+    throw new Error(`抓取單筆股利紀錄失敗${err}`);
   }
 };
 
@@ -172,7 +172,7 @@ export const editDividendById = async ({
     );
     return data;
   } catch (err) {
-    console.log(`Edit Dividend Failed ${err}`);
+    throw new Error(`修改單筆股利紀錄失敗${err}`);
   }
 };
 
@@ -183,7 +183,7 @@ export const deleteDividendById = async (id) => {
     });
     return data.success;
   } catch (err) {
-    console.log(`Delete Dividend Failed ${err}`);
+    throw new Error(`刪除單筆股利紀錄失敗${err}`);
   }
 };
 
@@ -193,7 +193,7 @@ export const getRecapCost = async () => {
     const { data } = await stockAPI.get(`/api/recap/cost`);
     return data;
   } catch (err) {
-    console.log(`Get Recap Failed ${err}`);
+    throw new Error(`抓取Recap成本資料失敗${err}`);
   }
 };
 
@@ -202,7 +202,7 @@ export const getRecapDividend = async () => {
     const { data } = await stockAPI.get(`/api/recap/dividends`);
     return data;
   } catch (err) {
-    console.log(`Get RecapDividend Failed ${err}`);
+    throw new Error(`抓取Recap股利資料失敗${err}`);
   }
 };
 
@@ -214,7 +214,7 @@ export const getRecapDiagram = async (period) => {
     // console.log(data);
     return data;
   } catch (err) {
-    console.log(`Get RecapDiagram Failed ${err}`);
+    throw new Error(`抓取Recap線圖資料失敗${err}`);
   }
 };
 
@@ -224,6 +224,6 @@ export const getRecapMargin = async () => {
     // console.log(data);
     return data;
   } catch (err) {
-    console.log(`Get RecapMargin Failed ${err}`);
+    throw new Error(`抓取Recap損益資料失敗${err}`);
   }
 };

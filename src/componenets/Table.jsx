@@ -1,24 +1,32 @@
-function Table({ config, datas }) {
+import { twMerge } from "tailwind-merge";
+
+export default function Table({ config, datas, TheadClass, TbodyClass }) {
+  const tHeadClass = twMerge(
+    "text-lg text-center align-middle text-white",
+    TheadClass
+  );
+  const tBodyClass = twMerge(
+    "text-lg text-center align-middle py-1.5",
+    TbodyClass
+  );
+
   const rederedThead = config.map((column) => (
-    <th
-      className="text-sm md:text-lg text-center align-middle text-white"
-      key={column.label}
-    >
+    <th className={tHeadClass} key={column.label}>
       {column.label}
     </th>
   ));
-  const renderedTbody = datas.map((row, index) => (
-    <tr key={row.id}>
-      {config.map((column) => (
-        <td
-          className="text-sm md:text-base text-center align-middle py-1.5"
-          key={column.label}
-        >
-          {column.render(row, index)}
-        </td>
-      ))}
-    </tr>
-  ));
+
+  const renderedTbody =
+    datas &&
+    datas.map((row, index) => (
+      <tr key={row.id}>
+        {config.map((column) => (
+          <td className={tBodyClass} key={column.label}>
+            {column.render(row, index)}
+          </td>
+        ))}
+      </tr>
+    ));
 
   return (
     <div>
@@ -33,5 +41,3 @@ function Table({ config, datas }) {
     </div>
   );
 }
-
-export default Table;

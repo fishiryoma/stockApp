@@ -10,19 +10,21 @@ import {
   Legend,
 } from "recharts";
 
-function StockChart({ allDividend }) {
-  const rendered = allDividend.map((data) => {
-    return {
-      name: data.dividendDate,
-      持有股數: data.sharesHold,
-      配息金額: +data.amount.toFixed(2),
-      收益: +(data.amount * data.sharesHold).toFixed(0),
-    };
-  });
+export default function DividendChart({ allDividend }) {
+  const rendered =
+    allDividend &&
+    allDividend.map((data) => {
+      return {
+        name: data.dividendDate,
+        持有股數: data.sharesHold,
+        配息金額: +data.amount.toFixed(2),
+        收益: +(data.amount * data.sharesHold).toFixed(0),
+      };
+    });
 
   return (
     <div style={{ width: "100%", height: 300 }}>
-      {rendered.length ? (
+      {rendered?.length ? (
         <ResponsiveContainer>
           <ComposedChart
             data={rendered}
@@ -36,7 +38,7 @@ function StockChart({ allDividend }) {
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis
               dataKey="name"
-              tick={{ fontSize: 14, stroke: "#f1f5f9" }}
+              tick={{ fontSize: 12, stroke: "#f1f5f9" }}
               tickMargin={24}
               angle={-30}
               height={50}
@@ -53,7 +55,7 @@ function StockChart({ allDividend }) {
               }}
               tickMargin={14}
               width={80}
-              tick={{ fontSize: 14, stroke: "#f1f5f9" }}
+              tick={{ fontSize: 12, stroke: "#f1f5f9" }}
               tickFormatter={(value) => value.toLocaleString("zh-TW")}
             />
             <YAxis
@@ -67,7 +69,7 @@ function StockChart({ allDividend }) {
               }}
               tickMargin={10}
               width={80}
-              tick={{ fontSize: 14, stroke: "#f1f5f9" }}
+              tick={{ fontSize: 12, stroke: "#f1f5f9" }}
               tickFormatter={(value) => value.toFixed(1)}
             />
 
@@ -90,12 +92,10 @@ function StockChart({ allDividend }) {
           </ComposedChart>
         </ResponsiveContainer>
       ) : (
-        <div className="text-2xl h-full flex items-center justify-center">
+        <div className="text-2xl h-full flex items-center justify-center w-100">
           目前沒有配息資料
         </div>
       )}
     </div>
   );
 }
-
-export default StockChart;
